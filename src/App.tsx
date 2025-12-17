@@ -1,12 +1,11 @@
-import gostLogo from "/icon.svg";
+import { Header } from "./components/Header";
+import { TokenList } from "./components/TokenList";
 
 function App() {
   return (
-    <div className="p-8 md:p-16 gap-8 bg-gray-100 dark:bg-gray-900 flex flex-col min-h-screen lg:flex-row lg:h-screen lg:max-h-screen w-full">
-      <div>
-        <img src={gostLogo} className="logo" alt="Vite logo" />
-      </div>
-      <h1>GOST</h1>
+    <div className="p-8 md:p-16 gap-8 bg-gray-100 dark:bg-gray-900 flex flex-col justify-start items-center min-h-screen w-full text-gray-900 dark:text-gray-100 ">
+      <Header />
+      <TokenList />
     </div>
   );
 }
