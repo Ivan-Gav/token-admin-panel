@@ -73,7 +73,7 @@ const TokenItem = ({ item }: { item: Token }) => {
   } = item;
 
   return (
-    <div className="grid grid-cols-12 gap-1 m-1 w-full">
+    <div className="grid grid-cols-12 gap-1 p-4 w-full odd:bg-gray-500/10">
       <>
         <div className="col-span-5">{id}</div>
         <div className="col-span-3 justify-self-end">
@@ -104,5 +104,11 @@ const TokenItem = ({ item }: { item: Token }) => {
 //-----------------------------------------------------------
 
 export const TokenList = () => {
-  return mockTokens.map((item) => <TokenItem item={item} key={item.id} />);
+  return (
+    <div className="flex flex-col">
+      {mockTokens.map((item) => (
+        <TokenItem item={item} key={item.id} />
+      ))}
+    </div>
+  );
 };
