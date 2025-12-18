@@ -17,8 +17,8 @@ export type Token = {
 
 export type TokenListResponse = Response<{
   params: {
-    limit: number;
-    offset: number;
+    Limit: number;
+    Offset: number;
   };
   tokens: Token[];
 }>;
