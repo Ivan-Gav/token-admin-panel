@@ -1,11 +1,9 @@
 // src/components/MainPage.jsx
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { apiClient, checkIsAuthError, api } from "../api";
-import { Fragment, useEffect } from "react";
-import { TokenList } from "../components";
+import { useEffect } from "react";
 import { useAuthContext } from "../context";
 import { useInView } from "react-intersection-observer";
-import type { Token, TokenListResponse } from "../types";
 import { TokenItem } from "../components/TokenItem";
 
 const LIMIT = 5;
@@ -13,23 +11,14 @@ const LIMIT = 5;
 export const MainPage = () => {
   const { setIsAuthError } = useAuthContext();
 
-  // const { isLoading, error } = useQuery({
-  //   queryKey: ["content"],
-  //   queryFn: () => apiClient.get(api.getTokenList).then((res) => res.data),
-  //   retry: false,
-  // });
-
   const {
     status,
     data,
     error,
     isFetching,
     isFetchingNextPage,
-    isFetchingPreviousPage,
     fetchNextPage,
-    fetchPreviousPage,
     hasNextPage,
-    hasPreviousPage,
   } = useInfiniteQuery({
     queryKey: ["tokens"],
     queryFn: async ({ pageParam }) => {
@@ -39,22 +28,24 @@ export const MainPage = () => {
           offset: pageParam,
         },
       });
-
-      console.log(`for pageParam=${pageParam} got response: `, response);
-
       return response.data;
     },
 
     initialPageParam: 0,
 
     getNextPageParam: (lastPage) => {
-      console.log("lastPage: ", lastPage);
-
-      if (lastPage?.data?.tokens?.length < LIMIT) {
+      if (!lastPage?.data?.tokens || !Array.isArray(lastPage.data.tokens)) {
         return null;
       }
 
-      return lastPage.data.params.Offset + LIMIT;
+      if (
+        lastPage.data.tokens.length === 0 ||
+        lastPage.data.tokens.length < LIMIT
+      ) {
+        return null;
+      }
+
+      return lastPage.data.params.offset + LIMIT;
     },
   });
 
@@ -79,10 +70,6 @@ export const MainPage = () => {
     console.log("data: ", data);
   }, [data]);
 
-  // if (!data) {
-  //   return <div className="p-8">Loading content...</div>;
-  // }
-
   if (error && !checkIsAuthError(error)) {
     return <div className="p-8 text-red-600">Error: {error.message}</div>;
   }
@@ -95,12 +82,13 @@ export const MainPage = () => {
     return <div>Ошибка: {error.message}</div>;
   }
 
-  // Получаем все токены из всех страниц
-  const allTokens = data.pages.flatMap((page) => page.data.tokens);
+  const allTokens = data.pages
+    .flatMap((page) => page.data.tokens)
+    .filter((token) => !!token);
 
   return (
     <div className="flex flex-col">
-      {allTokens.map((item, index) => (
+      {allTokens.map((item) => (
         <TokenItem item={item} key={item.id} />
       ))}
 

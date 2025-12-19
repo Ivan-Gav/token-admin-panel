@@ -5,20 +5,20 @@ type Response<T = unknown> = {
 };
 
 export type Token = {
-  activeBefore?: string;
+  active_before?: string;
   comment?: string;
-  createdAt: string;
-  hasPrivateAccess?: boolean;
+  created_at: string;
+  has_private_access?: boolean;
   id: string;
-  isActive: boolean;
+  is_active: boolean;
   owner?: string;
   points?: number;
 };
 
 export type TokenListResponse = Response<{
   params: {
-    Limit: number;
-    Offset: number;
+    limit: number;
+    offset: number;
   };
   tokens: Token[];
 }>;

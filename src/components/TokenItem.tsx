@@ -61,11 +61,11 @@ const Icons = ({
 export const TokenItem = ({ item }: { item: Token }) => {
   const {
     id,
-    activeBefore,
-    createdAt,
+    active_before: activeBefore,
+    created_at: createdAt,
     comment,
-    hasPrivateAccess,
-    isActive,
+    has_private_access: hasPrivateAccess,
+    is_active: isActive,
     owner,
     points,
   } = item;
