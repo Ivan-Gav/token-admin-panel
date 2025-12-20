@@ -1,47 +1,12 @@
 import { Link } from "@tanstack/react-router";
 
 import type { Token } from "../types";
-import ActiveIcon from "../assets/active.svg?react";
-import AccessIcon from "../assets/access.svg?react";
+import ActiveIcon from "@/assets/active.svg?react";
+import AccessIcon from "@/assets/access.svg?react";
+import ZeroIcon from "@/assets/zero.svg?react";
 import { Time } from "./ui";
-
-//-----------------------------------------------------------
-
-const Icons = ({
-  hasPrivateAccess,
-  isActive,
-}: {
-  hasPrivateAccess: boolean;
-  isActive: boolean;
-}) => {
-  const activeTitle = isActive ? "активен" : "не активен";
-
-  const accessTitle = isActive
-    ? `${
-        hasPrivateAccess
-          ? "приватные рауты доступны"
-          : "приватные рауты не доступны"
-      }`
-    : undefined;
-
-  const activeClass = !isActive ? "opacity-10" : "";
-
-  const accessClass = !hasPrivateAccess ? "opacity-10" : "";
-
-  return (
-    <div className="flex justify-end items-center gap-1">
-      {isActive && (
-        <span title={accessTitle}>
-          <AccessIcon className={accessClass} />
-        </span>
-      )}
-
-      <span title={activeTitle}>
-        <ActiveIcon className={activeClass} />
-      </span>
-    </div>
-  );
-};
+import { Button } from "./ui/Button";
+import { CopyToClipboard } from "./ui/CopyToClipboard";
 
 //-----------------------------------------------------------
 
@@ -57,35 +22,128 @@ export const TokenItem = ({ item }: { item: Token }) => {
     points,
   } = item;
 
+  const formattedPoints = points
+    ? new Intl.NumberFormat("ru-RU").format(points)
+    : "0";
+
   return (
-    <Link
-      to={"/tokens/$id"}
-      params={{ id }}
-      className="grid grid-cols-12 gap-1 p-4 w-full odd:bg-gray-500/10 h-screen"
+    <li
+      className="list-none bg-white text-slate-950 flex flex-col rounded-xl border
+    border-slate-200 shadow-sm dark:bg-slate-950 dark:text-slate-50 dark:border-slate-800 w-full md:w-fit"
     >
-      <>
-        <div className="col-span-5">{id}</div>
-        <div className="col-span-3 justify-self-end">
-          <Time timestring={createdAt} title="создан" />
+      <div className="flex justify-between gap-4 p-4 items-center border-b w-auto">
+        <div
+          className="overflow-hidden text-ellipsis text-xl font-semibold"
+          title="Идентификационный номер токена"
+        >
+          {id}
         </div>
-        <div className="col-span-3 justify-self-end">
-          {!!activeBefore && (
-            <Time timestring={activeBefore} title="истекает" />
+        <CopyToClipboard content={id} />
+      </div>
+
+      <div className="flex flex-col md:flex-row ">
+        <div className="flex flex-col gap-2 w-full md:w-132 p-4">
+          {!!owner && (
+            <div>
+              <span className="font-semibold inline-block min-w-30">
+                {"Владелец: "}
+              </span>
+              <span>{owner}</span>
+            </div>
           )}
+
+          {!!comment && (
+            <div className="line-clamp-4">
+              <span className="font-semibold inline-block min-w-30">
+                {"Комментарий: "}
+              </span>
+              <span>
+                {
+                  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
+                }
+              </span>
+            </div>
+          )}
+
+          <div className="">
+            <span className="font-semibold inline-block min-w-30">
+              {"Создан: "}
+            </span>
+            <Time timestring={createdAt} title="создан" />
+          </div>
+
+          <div className="">
+            <span className="font-semibold inline-block min-w-30">
+              {"Истекает: "}
+            </span>
+            {activeBefore ? (
+              <Time timestring={activeBefore} title="истекает" />
+            ) : (
+              "—"
+            )}
+          </div>
+
+          <Link
+            to={"/tokens/$id"}
+            params={{ id }}
+            className="w-fit justify-self-end mt-auto hidden md:block"
+          >
+            <Button variant={"link"}>{"Открыть"}</Button>
+          </Link>
         </div>
-        <div className="col-span-1">
-          <Icons isActive={isActive} hasPrivateAccess={!!hasPrivateAccess} />
+
+        <div className="flex flex-col w-full md:w-52 p-4 gap-2">
+          <div className="flex justify-between">
+            {isActive ? (
+              <>
+                <div>{"Активен"}</div>
+                <ActiveIcon className="text-green-600 min-w-6" />
+              </>
+            ) : (
+              <>
+                <div>{"Не активен"}</div>
+                <ActiveIcon className="opacity-10 min-w-6" />
+              </>
+            )}
+          </div>
+
+          <div className="flex justify-between">
+            {hasPrivateAccess ? (
+              <>
+                <div className="text-wrap">{"Доступ к закрытым раутам"}</div>
+                <AccessIcon className="text-green-600 min-w-6" />
+              </>
+            ) : (
+              <>
+                <div className="text-wrap shrink">
+                  {"Нет доступа к закрытым раутам"}
+                </div>
+                <AccessIcon className="opacity-20 min-w-6" />
+              </>
+            )}
+          </div>
+
+          <hr />
+
+          <div className="w-full flex flex-col items-center gap-1">
+            {points ? (
+              <div className="text-2xl font-bold">{formattedPoints}</div>
+            ) : (
+              <ZeroIcon className="w-12 h-12 opacity-20" />
+            )}
+
+            {/* <div className="text-xl font-semibold">{"Баланс"}</div> */}
+          </div>
+
+          <Link
+            to={"/tokens/$id"}
+            params={{ id }}
+            className="w-fit self-center md:hidden"
+          >
+            <Button variant={"link"}>{"Открыть"}</Button>
+          </Link>
         </div>
-      </>
-      <>
-        <div className="col-span-10">
-          {!!owner && <div>{`Владелец: ${owner}`}</div>}
-          {!!comment && <div>{`Комментарий: ${comment}`}</div>}
-        </div>
-        <div className="col-span-2 justify-self-end pr-1">
-          <span>{points ?? "—"}</span>
-        </div>
-      </>
-    </Link>
+      </div>
+    </li>
   );
 };

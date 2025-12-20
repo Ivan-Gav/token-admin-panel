@@ -7,10 +7,13 @@ import { useAuthContext } from "../context";
 import { Button } from "@/components/ui/Button";
 import GostLogo from "../assets/icon.svg?react";
 import { Link } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Layout = ({ children }: PropsWithChildren) => {
   const { isAuthError, apiKey, setApiKey, setIsAuthError, setIsAuthenticated } =
     useAuthContext();
+
+  const queryClient = useQueryClient();
 
   const showLogout = !!apiKey && !isAuthError;
 
@@ -18,6 +21,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
     setApiKey("");
     setIsAuthError(false);
     setIsAuthenticated(false);
+    queryClient.clear();
   };
 
   return (

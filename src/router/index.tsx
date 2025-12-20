@@ -4,6 +4,7 @@ import { useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { routeTree } from "./routeTree.gen";
 
 import { useAuthContext, type AuthContextType } from "../context";
+import { Loading } from "@/components/ui/Loading";
 
 export interface RouterContext {
   auth: AuthContextType;
@@ -25,7 +26,7 @@ const router = createRouter({
     auth: undefined!, // This will be set after we wrap the app in an AuthProvider
     queryClient: undefined!,
   },
-  defaultPendingComponent: () => <div>{"Зогрузко...."}</div>,
+  defaultPendingComponent: () => <Loading />,
 });
 
 export const Router = () => {

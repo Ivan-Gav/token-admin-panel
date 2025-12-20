@@ -1,12 +1,13 @@
 // src/components/MainPage.jsx
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { checkIsAuthError } from "../api";
+import { checkIsAuthError } from "@/api";
 import { useEffect } from "react";
-import { useAuthContext } from "../context";
+import { useAuthContext } from "@/context";
 import { useInView } from "react-intersection-observer";
-import { TokenItem } from "../components/TokenItem";
+import { TokenItem } from "@/components/TokenItem";
 import { useNavigate } from "@tanstack/react-router";
 import { tokensQueryOptions } from "@/utils";
+import { Loading } from "@/components/ui/Loading";
 
 export const TokensPage = () => {
   const { setIsAuthError, setApiKey } = useAuthContext();
@@ -15,7 +16,7 @@ export const TokensPage = () => {
     status,
     data,
     error,
-    isFetching,
+    // isFetching,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
@@ -61,7 +62,7 @@ export const TokensPage = () => {
     .filter((token) => !!token);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-4 items-center w-full">
       {allTokens.map((item) => (
         <TokenItem item={item} key={item.id} />
       ))}
@@ -69,15 +70,11 @@ export const TokensPage = () => {
       {/* Триггер для загрузки следующей страницы */}
       <div ref={ref} className="loader-trigger">
         {isFetchingNextPage ? (
-          <div>Загрузка...</div>
-        ) : hasNextPage ? (
-          <div>Достигнув этого элемента, начнется загрузка</div>
+          <Loading />
         ) : (
-          <div>Все токены загружены</div>
+          !hasNextPage && <div>Все токены загружены</div>
         )}
       </div>
-
-      {isFetching && !isFetchingNextPage && <div>Фоновая загрузка...</div>}
     </div>
   );
 };
