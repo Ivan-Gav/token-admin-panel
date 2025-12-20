@@ -1,22 +1,9 @@
-import dayjs from "dayjs";
+import { Link } from "@tanstack/react-router";
 
 import type { Token } from "../types";
 import ActiveIcon from "../assets/active.svg?react";
 import AccessIcon from "../assets/access.svg?react";
-
-//-----------------------------------------------------------
-
-const Time = ({
-  timestring,
-  title,
-}: {
-  timestring: string;
-  title?: string;
-}) => {
-  const time = dayjs(timestring).format("DD/MM/YYYY HH:mm");
-
-  return <span title={title}>{time}</span>;
-};
+import { Time } from "./ui";
 
 //-----------------------------------------------------------
 
@@ -71,7 +58,11 @@ export const TokenItem = ({ item }: { item: Token }) => {
   } = item;
 
   return (
-    <div className="grid grid-cols-12 gap-1 p-4 w-full odd:bg-gray-500/10">
+    <Link
+      to={"/tokens/$id"}
+      params={{ id }}
+      className="grid grid-cols-12 gap-1 p-4 w-full odd:bg-gray-500/10 h-screen"
+    >
       <>
         <div className="col-span-5">{id}</div>
         <div className="col-span-3 justify-self-end">
@@ -95,6 +86,6 @@ export const TokenItem = ({ item }: { item: Token }) => {
           <span>{points ?? "—"}</span>
         </div>
       </>
-    </div>
+    </Link>
   );
 };

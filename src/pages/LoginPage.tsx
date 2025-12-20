@@ -1,53 +1,89 @@
-// src/components/LoginPage.jsx
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type InputHTMLAttributes } from "react";
 import { useAuthContext } from "../context";
+import { useNavigate } from "@tanstack/react-router";
+import { Field, FieldError } from "@/components/ui/Field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/Button";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const PasswordInput = ({
+  className,
+  ...props
+}: InputHTMLAttributes<HTMLInputElement>) => {
+  const [showPassword, setShowPassword] = useState(true);
+
+  return (
+    <div className="relative">
+      <Input
+        {...props}
+        type={showPassword ? "text" : "password"}
+        placeholder="Введите пароль"
+        className={cn(
+          "pr-10 md:text-xl h-auto min-w-[50vw] max-w-180",
+          className
+        )}
+      />
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        className="absolute right-0 top-0 h-full px-2 py-1 w-12 hover:bg-transparent"
+        onClick={() => setShowPassword((prev) => !prev)}
+      >
+        {showPassword ? (
+          <EyeIcon className="h-6 w-6" aria-hidden="true" />
+        ) : (
+          <EyeOffIcon className="h-6 w-6" aria-hidden="true" />
+        )}
+        <span className="sr-only">
+          {showPassword ? "Скрыть пароль" : "Показать пароль"}
+        </span>
+      </Button>
+    </div>
+  );
+};
+
+// ---------------------------------------------------------------
 
 export const LoginPage = () => {
   const [value, setValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const { setApiKey, setIsAuthError, isAuthError } = useAuthContext();
+
+  const navigate = useNavigate({ from: "/login" });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (value.trim()) {
-      setIsLoading(true);
       console.log("submitted: ", value);
       setApiKey(value.trim());
-      setIsAuthError(false); // Reset error on new login attempt
-      // Loading state will be cleared when MainPage loads or fails
+      setIsAuthError(false);
+      navigate({ to: "/" });
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-sm w-full">
-        <h1 className="text-2xl font-bold mb-4">Enter API Key</h1>
-
-        {isAuthError && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-            Invalid API key. Try again.
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <input
-            type="password"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder="Paste your x-api-key"
-            className="w-full p-3 border rounded mb-4"
-            autoFocus
-          />
-          <button
-            type="submit"
-            disabled={!value.trim() || isLoading}
-            className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 disabled:opacity-50"
-          >
-            {isLoading ? "Loading..." : "Access"}
-          </button>
-        </form>
-      </div>
-    </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6 items-center">
+      <Field>
+        <PasswordInput
+          id="admin-key"
+          type="password"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <FieldError className="md:text-xl">
+          {isAuthError ? "Неверный токен. Попробуйте снова" : ""}
+        </FieldError>
+      </Field>
+      <Button
+        type="submit"
+        variant="outline"
+        size={"lg"}
+        className="md:text-xl w-fit"
+      >
+        {"Отправить"}
+      </Button>
+    </form>
   );
 };

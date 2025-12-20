@@ -1,4 +1,4 @@
-type Response<T = unknown> = {
+export type Response<T = unknown> = {
   data: T;
   message?: string;
   success: boolean;

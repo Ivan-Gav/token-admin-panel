@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Layout } from "./pages/Layout";
-import { AuthProvider } from "./context";
+import { AuthProvider, ThemeProvider } from "./context";
+import { Router } from "./router";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,20 +14,13 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Layout />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router />
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
-
-// function App() {
-//   return (
-//     <div className="p-8 md:p-16 gap-8 bg-gray-100 dark:bg-gray-900 flex flex-col justify-start items-center min-h-screen w-full text-gray-900 dark:text-gray-100 ">
-//       <Header />
-//       <TokenList />
-//     </div>
-//   );
-// }
 
 export default App;
