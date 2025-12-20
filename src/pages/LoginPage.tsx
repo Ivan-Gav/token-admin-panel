@@ -2,7 +2,7 @@ import { useState, type FormEvent, type InputHTMLAttributes } from "react";
 import { useAuthContext } from "../context";
 import { useNavigate } from "@tanstack/react-router";
 import { Field, FieldError } from "@/components/ui/Field";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
