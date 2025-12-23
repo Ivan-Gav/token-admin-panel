@@ -15,6 +15,11 @@ export type Token = {
   points?: number;
 };
 
+export type TokenCreateResponseData = {
+  params: Token;
+  token: string;
+};
+
 export type TokenCreateData = {
   active_before?: string;
   comment?: string;

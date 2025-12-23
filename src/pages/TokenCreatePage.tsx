@@ -6,22 +6,25 @@ import { Checkbox } from "@/components/ui/Checkbox";
 
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldLabel,
   FieldLegend,
-  // FieldSeparator,
   FieldSet,
 } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
-import type { TokenCreateData } from "@/types";
+import type {
+  Response,
+  TokenCreateData,
+  TokenCreateResponseData,
+} from "@/types";
 import { createTokenSchema } from "@/utils/validation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, apiClient, checkIsAuthError } from "@/api";
 import { getApiError } from "@/utils/errorHandling";
 import { useAuthContext } from "@/context";
 import { useNavigate } from "@tanstack/react-router";
+import { useModalStore } from "@/store/useModalStore";
 
 export const TokenCreatePage = () => {
   const defaultValues: TokenCreateData = {
@@ -35,17 +38,21 @@ export const TokenCreatePage = () => {
   const queryClient = useQueryClient();
   const { setApiKey, setIsAuthError } = useAuthContext();
   const navigate = useNavigate();
+  const { onOpen } = useModalStore();
 
   const mutation = useMutation({
     mutationFn: async (value: TokenCreateData) => {
-      const response = await apiClient.post(api.createToken, value);
-      console.log(response);
+      const response = await apiClient.post<Response<TokenCreateResponseData>>(
+        api.createToken,
+        value
+      );
       return response;
     },
     onSuccess: (response) => {
-      console.log("successful response: ", response);
       queryClient.invalidateQueries({ queryKey: ["tokens"] });
       form.reset();
+      const { token: id } = response.data.data;
+      onOpen("createSuccess", { id });
     },
     onError: (error) => {
       form.setErrorMap({
@@ -155,7 +162,7 @@ export const TokenCreatePage = () => {
             name="points"
             children={(field) => (
               <Field>
-                <FieldLabel htmlFor={field.name}>Баланс</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Баланс (points)</FieldLabel>
                 <Input
                   placeholder="1 000 000"
                   id={field.name}
@@ -172,7 +179,6 @@ export const TokenCreatePage = () => {
                     .map((error) => error?.message)
                     .join("\n")}
                 </FieldError>
-                <FieldDescription>Количество пойнтов (points)</FieldDescription>
               </Field>
             )}
           />
@@ -193,7 +199,6 @@ export const TokenCreatePage = () => {
             )}
           />
         </FieldSet>
-        {/* <FieldSeparator /> */}
 
         <form.Field
           name="has_private_access"
@@ -239,6 +244,16 @@ export const TokenCreatePage = () => {
           children={([error]) => <FieldError>{error}</FieldError>}
         />
       </form>
+      {/* <Button
+        onClick={() => {
+          onOpen("createSuccess", {
+            id: "122111111111111111111111111111111111111111134322222222222222222222222222222",
+          });
+        }}
+        className="mt-14"
+      >
+        Модалка
+      </Button> */}
     </div>
   );
 };

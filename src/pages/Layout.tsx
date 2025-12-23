@@ -10,6 +10,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import PlusIcon from "@/assets/plus.svg?react";
 import ListIcon from "@/assets/list.svg?react";
+import { ModalProvider } from "@/components/modals/ModalProvider";
 
 // ----------------------------------------------------------------------
 
@@ -100,6 +101,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
           {children}
         </section>
       </main>
+      <ModalProvider />
     </>
   );
 };

@@ -24,7 +24,7 @@ export const CopyToClipboard = ({ content }: Props) => {
   return (
     <IconButton
       onClick={handleCopy}
-      className={`transition-colors duration-200 focus:outline-none focus:ring-transparent focus:ring-offset-transparent active:outline-none active:border-transparent focus-visible:outline-none focus-visible:border-transparent ${
+      className={`transition-colors duration-200 h-fit focus:outline-none focus:ring-transparent focus:ring-offset-transparent active:outline-none active:border-transparent focus-visible:outline-none focus-visible:border-transparent ${
         copied ? "text-green-600" : ""
       }`}
       title={copied ? "Скопировано!" : "Копировать"}
