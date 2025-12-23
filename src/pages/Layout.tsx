@@ -82,7 +82,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
 
   return (
     <>
-      <header className="w-full flex h-20 p-8 border-b items-center justify-between gap-8 sticky top-0 ">
+      <header className="w-full flex h-20 p-8 border-b items-center justify-between gap-8 sticky top-0 bg-background z-10">
         <GostLogo className="h-12 w-12 scale-100 hidden sm:block" />
         <nav className="flex justify-end-safe items-center gap-4 ml-auto">
           {!!isAuthorized && (

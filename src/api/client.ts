@@ -21,7 +21,6 @@ export const clearApiKey = () => localStorage.removeItem("x-api-key");
 apiClient.interceptors.request.use((config) => {
   const apiKey = getApiKey();
   if (apiKey) {
-    console.log("apiKey intercepted in axios: ", apiKey);
     config.headers["x-api-key"] = apiKey;
   }
   return config;
@@ -29,13 +28,6 @@ apiClient.interceptors.request.use((config) => {
 
 // Check if error is auth-related
 export const checkIsAuthError = (error: unknown) => {
-  console.log("checking error: ", error);
-  console.log("error instanceof AxiosError: ", error instanceof AxiosError);
-  console.log(
-    "error.response.status: ",
-    (error as AxiosError)?.response?.status
-  );
-
   return (
     error instanceof AxiosError &&
     (error.response?.status === 401 || error.response?.status === 403)

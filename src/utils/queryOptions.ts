@@ -6,7 +6,6 @@ const LIMIT = 1;
 export const tokensQueryOptions = infiniteQueryOptions({
   queryKey: ["tokens"],
   queryFn: async ({ pageParam = 0 }) => {
-    await new Promise((r) => setTimeout(r, 2000));
     const response = await apiClient.get(api.getTokenList, {
       params: {
         limit: LIMIT,

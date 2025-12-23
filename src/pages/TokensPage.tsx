@@ -6,7 +6,7 @@ import { useAuthContext } from "@/context";
 import { useInView } from "react-intersection-observer";
 import { TokenItem } from "@/components/TokenItem";
 import { useNavigate } from "@tanstack/react-router";
-import { tokensQueryOptions } from "@/utils";
+import { tokensQueryOptions } from "@/utils/queryOptions";
 import { Loading } from "@/components/ui/Loading";
 
 export const TokensPage = () => {
@@ -62,7 +62,7 @@ export const TokensPage = () => {
     .filter((token) => !!token);
 
   return (
-    <div className="flex flex-col gap-4 items-center w-full">
+    <ul className="flex flex-col gap-4 items-center w-full">
       {allTokens.map((item) => (
         <TokenItem item={item} key={item.id} />
       ))}
@@ -75,6 +75,6 @@ export const TokensPage = () => {
           !hasNextPage && <div>Все токены загружены</div>
         )}
       </div>
-    </div>
+    </ul>
   );
 };

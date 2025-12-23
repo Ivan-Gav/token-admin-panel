@@ -29,7 +29,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
   return (
     <li
       className="list-none bg-white text-slate-950 flex flex-col rounded-xl border
-    border-slate-200 shadow-sm dark:bg-slate-950 dark:text-slate-50 dark:border-slate-800 w-full md:w-fit"
+    border-slate-200 shadow-sm dark:bg-slate-950 dark:text-slate-50 dark:border-slate-800 w-full max-w-3xl"
     >
       <div className="flex justify-between gap-4 p-4 items-center border-b w-auto">
         <div
@@ -41,7 +41,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
         <CopyToClipboard content={id} />
       </div>
 
-      <div className="flex flex-col md:flex-row ">
+      <div className="flex flex-col md:flex-row md:justify-between">
         <div className="flex flex-col gap-2 w-full md:w-132 p-4">
           {!!owner && (
             <div>
@@ -57,11 +57,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
               <span className="font-semibold inline-block min-w-30">
                 {"Комментарий: "}
               </span>
-              <span>
-                {
-                  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-                }
-              </span>
+              <span>{comment}</span>
             </div>
           )}
 

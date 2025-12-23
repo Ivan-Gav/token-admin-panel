@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { TokensPage } from "../pages";
-import { tokensQueryOptions } from "@/utils";
+import { tokensQueryOptions } from "@/utils/queryOptions";
 import { checkIsAuthError } from "@/api";
 
 export const Route = createFileRoute("/")({
@@ -19,7 +19,6 @@ export const Route = createFileRoute("/")({
     }
   },
   loader: async ({ context }) => {
-    // await new Promise((r) => setTimeout(r, 2000));
     const {
       queryClient,
       auth: { setIsAuthError, setApiKey },

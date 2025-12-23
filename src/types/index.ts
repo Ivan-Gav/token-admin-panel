@@ -15,6 +15,14 @@ export type Token = {
   points?: number;
 };
 
+export type TokenCreateData = {
+  active_before?: string;
+  comment?: string;
+  has_private_access: boolean;
+  owner?: string;
+  points?: number;
+};
+
 export type TokenListResponse = Response<{
   params: {
     limit: number;
