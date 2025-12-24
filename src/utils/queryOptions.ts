@@ -1,5 +1,6 @@
 import { apiClient, api } from "@/api";
-import { infiniteQueryOptions } from "@tanstack/react-query";
+import type { Token, Response } from "@/types";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 
 const LIMIT = 1;
 
@@ -32,3 +33,10 @@ export const tokensQueryOptions = infiniteQueryOptions({
     return lastPage.data.params.offset + LIMIT;
   },
 });
+
+export const tokenQueryOptions = (id: string) =>
+  queryOptions({
+    queryKey: ["token", id],
+    queryFn: () =>
+      apiClient.get<Response<Token>>(`${api.getToken}?token_id=${id}`),
+  });

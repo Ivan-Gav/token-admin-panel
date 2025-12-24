@@ -56,3 +56,14 @@ export const createTokenSchema = z
       } catch {}
     }
   });
+
+export const isPastDatestring = (datestring: string) => {
+  try {
+    const date = startOfDay(parseJSON(datestring));
+    const today = endOfDay(new Date());
+
+    return isBefore(date, today);
+  } catch {
+    return false;
+  }
+};

@@ -3,9 +3,9 @@ import { create } from "zustand";
 
 interface ModalData {
   createSuccess: { id: string };
-  //   editUser: { id: string; email: string; role: 'admin' | 'user' };
-  //   createPost: { categoryId?: string };
-  // Add more as needed...
+  changeStatus: { id: string; active: boolean };
+  changeTimeout: { id: string; timeout?: string };
+  changePoints: { id: string; points?: number };
 }
 
 type ModalType = keyof ModalData;

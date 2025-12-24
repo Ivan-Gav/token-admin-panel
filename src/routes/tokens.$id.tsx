@@ -1,15 +1,7 @@
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { TokenPage } from "../pages/TokenPage";
-import { queryOptions } from "@tanstack/react-query";
-import { api, apiClient, checkIsAuthError } from "../api";
-import type { Response, Token } from "../types";
-
-const tokenQueryOptions = (id: string) =>
-  queryOptions({
-    queryKey: ["token", id],
-    queryFn: () =>
-      apiClient.get<Response<Token>>(`${api.getToken}?token_id=${id}`),
-  });
+import { checkIsAuthError } from "../api";
+import { tokenQueryOptions } from "@/utils/queryOptions";
 
 export const Route = createFileRoute("/tokens/$id")({
   component: TokenPage,
@@ -27,8 +19,6 @@ export const Route = createFileRoute("/tokens/$id")({
     }
   },
   loader: async ({ context, params: { id } }) => {
-    console.log("start fetching");
-    // await new Promise((r) => setTimeout(r, 2000));
     const {
       queryClient,
       auth: { setIsAuthError, setApiKey },
@@ -36,7 +26,7 @@ export const Route = createFileRoute("/tokens/$id")({
 
     try {
       const data = await queryClient.ensureQueryData(tokenQueryOptions(id));
-      return data.data;
+      return data;
     } catch (error) {
       if (checkIsAuthError(error)) {
         console.log(`auth error`);
@@ -52,5 +42,4 @@ export const Route = createFileRoute("/tokens/$id")({
       throw notFound();
     }
   },
-  // pendingComponent: () => <div>{"Зогрузко токена...."}</div>,
 });

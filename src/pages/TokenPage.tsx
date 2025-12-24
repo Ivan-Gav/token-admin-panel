@@ -1,38 +1,36 @@
 import { getRouteApi } from "@tanstack/react-router";
 
-import { Time, Wrapper } from "../components/ui";
-import { StatusIcons } from "../components/StatusIcons";
+import EditIcon from "@/assets/edit.svg?react";
 
-import { CircleCheck } from "lucide-react";
-
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { CopyToClipboard } from "@/components/ui/CopyToClipboard";
+import { format } from "date-fns";
+import { IconButton } from "@/components/ui/IconButton";
+import { useModalStore } from "@/store/useModalStore";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { tokenQueryOptions } from "@/utils/queryOptions";
 
 //---------------------------------------------------------
-const StatusIcon = ({
-  isActive,
-  onClick,
-}: {
-  isActive: boolean;
-  onClick: (value: boolean) => void;
-}) => {
-  const handleClick = onClick(isActive);
 
+type PropertyLineProps = {
+  title: string;
+  value: string;
+  onEditClick?: () => void;
+};
+
+//---------------------------------------------------------
+
+const PropertyLine = ({ title, value, onEditClick }: PropertyLineProps) => {
   return (
-    <button onClick={handleClick}>
-      {isActive ? (
-        <CircleCheck className="text-green-600 cursor-pointer" />
-      ) : (
-        <CircleCheck className="text-gray-500 cursor-pointer" />
+    <div className="flex gap-2 w-full">
+      <span className="font-semibold inline-block sm:min-w-60">{`${title}: `}</span>
+      <span className="">{value}</span>
+      {!!onEditClick && (
+        <IconButton onClick={onEditClick} className="h-fit">
+          <EditIcon />
+        </IconButton>
       )}
-    </button>
+    </div>
   );
 };
 
@@ -41,11 +39,11 @@ const StatusIcon = ({
 const route = getRouteApi("/tokens/$id");
 
 export const TokenPage = () => {
-  const { useLoaderData } = route;
+  const { id: tokenId } = route.useParams();
 
-  const data = useLoaderData();
+  const data = useSuspenseQuery(tokenQueryOptions(tokenId));
 
-  console.log("token data: ", data);
+  const onOpen = useModalStore((s) => s.onOpen);
 
   const {
     id,
@@ -56,60 +54,72 @@ export const TokenPage = () => {
     is_active: isActive,
     owner,
     points,
-  } = data.data;
+  } = data.data.data.data;
 
-  const onStatusClick = () => {};
+  const formattedPoints = points
+    ? new Intl.NumberFormat("ru-RU").format(points)
+    : "0";
+
+  const onStatusClick = () => {
+    onOpen("changeStatus", { id, active: isActive });
+  };
+
+  const onExpiredClick = () => {
+    onOpen("changeTimeout", { id, timeout: activeBefore });
+  };
+
+  const onPointsClick = () => {
+    onOpen("changePoints", { id, points });
+  };
 
   return (
-    <Wrapper>
-      {/* <div className="grid grid-cols-12 gap-1 p-4 w-full">
-        <>
-          <div className="col-span-5">{id}</div>
-          <div className="col-span-3 justify-self-end">
-            <Time timestring={createdAt} title="создан" />
-          </div>
-          <div className="col-span-3 justify-self-end">
-            {!!activeBefore && (
-              <Time timestring={activeBefore} title="истекает" />
-            )}
-          </div>
-          <div className="col-span-1">
-            <StatusIcons
-              isActive={isActive}
-              hasPrivateAccess={!!hasPrivateAccess}
-            />
-          </div>
-        </>
-        <>
-          <div className="col-span-10">
-            {!!owner && <div>{`Владелец: ${owner}`}</div>}
-            {!!comment && <div>{`Комментарий: ${comment}`}</div>}
-          </div>
-          <div className="col-span-2 justify-self-end pr-1">
-            <span>{points ?? "—"}</span>
-          </div>
-        </>
-      </div>
-       */}
+    <Card
+      className="list-none bg-white text-slate-950 flex flex-col rounded-xl border
+    border-slate-200 shadow-sm dark:bg-slate-950 dark:text-slate-50 dark:border-slate-800 w-full max-w-3xl pt-2"
+    >
+      <CardHeader className="flex justify-between gap-4 p-4 items-center border-b w-auto">
+        <CardTitle
+          className="overflow-hidden text-ellipsis text-xl font-semibold"
+          title="Идентификационный номер токена"
+        >
+          {id}
+        </CardTitle>
+        <CopyToClipboard content={id} />
+      </CardHeader>
 
-      <Card className="w-max">
-        <CardHeader className="w-max">
-          <CardTitle>{id}</CardTitle>
-          <CardAction>
-            {isActive ? (
-              <CircleCheck className="text-green-600" />
-            ) : (
-              <CircleCheck className="text-gray-500" />
-            )}
-          </CardAction>
-        </CardHeader>
-        <CardContent>
-          <p>Card Content</p>
-        </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
-      </Card>
-    </Wrapper>
+      <CardContent className="flex flex-col md:flex-row md:justify-between">
+        <div className="flex flex-col gap-2 w-full  p-4">
+          <PropertyLine title={"Владелец"} value={owner || "—"} />
+          <PropertyLine title={"Комментарий"} value={comment || "—"} />
+          <PropertyLine
+            title={"Создан"}
+            value={format(createdAt, "dd/MM/yyyy HH:mm") || "—"}
+          />
+          <PropertyLine
+            title={"Истекает"}
+            value={
+              activeBefore ? format(activeBefore, "dd/MM/yyyy HH:mm") : "—"
+            }
+            onEditClick={onExpiredClick}
+          />
+          <PropertyLine
+            title={"Статус"}
+            value={isActive ? "Активен" : "Не активен"}
+            onEditClick={onStatusClick}
+          />
+
+          <PropertyLine
+            title={"Доступ к закрытым раутам"}
+            value={hasPrivateAccess ? "Есть" : "Нет"}
+          />
+
+          <PropertyLine
+            title={"Баланс (points)"}
+            value={String(formattedPoints ?? 0)}
+            onEditClick={onPointsClick}
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 };

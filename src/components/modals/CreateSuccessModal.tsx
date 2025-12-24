@@ -1,4 +1,3 @@
-// components/modals/confirm-delete-modal.tsx
 "use client";
 
 import { useModalStore } from "@/store/useModalStore";

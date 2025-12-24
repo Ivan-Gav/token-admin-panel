@@ -244,16 +244,6 @@ export const TokenCreatePage = () => {
           children={([error]) => <FieldError>{error}</FieldError>}
         />
       </form>
-      {/* <Button
-        onClick={() => {
-          onOpen("createSuccess", {
-            id: "122111111111111111111111111111111111111111134322222222222222222222222222222",
-          });
-        }}
-        className="mt-14"
-      >
-        Модалка
-      </Button> */}
     </div>
   );
 };

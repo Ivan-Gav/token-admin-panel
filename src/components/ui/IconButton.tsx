@@ -15,7 +15,7 @@ export const IconButton = ({
   ...props
 }: IconButtonProps) => {
   const buttonVariants = cva(
-    "inline-flex items-center justify-center rounded-full transition-colors focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none border-none",
+    "inline-flex items-center justify-center rounded-full transition-colors cursor-pointer disabled:opacity-50 disabled:pointer-events-none disabled:cursor-default border-none ",
     {
       variants: {
         size: {
