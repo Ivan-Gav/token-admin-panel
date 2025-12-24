@@ -23,7 +23,10 @@ const CreateTokenButton = () => {
 
   return (
     <Link to={"/token-create"}>
-      <Button variant="ghost" className="gap-1 px-1">
+      <Button variant="outline" className="sm:hidden" size="icon">
+        <PlusIcon className="size-6" />
+      </Button>
+      <Button variant="ghost" className="hidden sm:flex gap-1 px-1">
         <PlusIcon className="size-6" />
         <span>{"Создать токен"}</span>
       </Button>
@@ -66,9 +69,12 @@ const BackToListButton = () => {
 
   return (
     <Link to={"/"}>
-      <Button variant="ghost" className="gap-1 px-1">
+      <Button variant="outline" className="sm:hidden" size="icon">
         <ListIcon className="size-6" />
-        <span>{"К списку токенов"}</span>
+      </Button>
+      <Button variant="ghost" className="hidden sm:flex gap-1 px-1">
+        <ListIcon className="size-6" />
+        <span className="hidden sm:inline">{"К списку токенов"}</span>
       </Button>
     </Link>
   );
@@ -84,7 +90,9 @@ export const Layout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <header className="w-full flex h-20 p-8 border-b items-center justify-between gap-8 sticky top-0 bg-background z-10">
-        <GostLogo className="h-12 w-12 scale-100 hidden sm:block" />
+        <Link to="/">
+          <GostLogo className="h-12 w-12 scale-100 hidden sm:block" />
+        </Link>
         <nav className="flex justify-end-safe items-center gap-4 ml-auto">
           {!!isAuthorized && (
             <>

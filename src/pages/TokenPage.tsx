@@ -9,6 +9,7 @@ import { IconButton } from "@/components/ui/IconButton";
 import { useModalStore } from "@/store/useModalStore";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { tokenQueryOptions } from "@/utils/queryOptions";
+import { TokenLogs } from "@/components/TokenLogs";
 
 //---------------------------------------------------------
 
@@ -73,53 +74,56 @@ export const TokenPage = () => {
   };
 
   return (
-    <Card
-      className="list-none bg-white text-slate-950 flex flex-col rounded-xl border
+    <section className="w-full flex flex-col items-center gap-4 grow">
+      <Card
+        className="bg-white text-slate-950 flex flex-col rounded-xl border
     border-slate-200 shadow-sm dark:bg-slate-950 dark:text-slate-50 dark:border-slate-800 w-full max-w-3xl pt-2"
-    >
-      <CardHeader className="flex justify-between gap-4 p-4 items-center border-b w-auto">
-        <CardTitle
-          className="overflow-hidden text-ellipsis text-xl font-semibold"
-          title="Идентификационный номер токена"
-        >
-          {id}
-        </CardTitle>
-        <CopyToClipboard content={id} />
-      </CardHeader>
+      >
+        <CardHeader className="flex justify-between gap-4 p-4 items-center border-b w-auto">
+          <CardTitle
+            className="overflow-hidden text-ellipsis text-xl font-semibold"
+            title="Идентификационный номер токена"
+          >
+            {id}
+          </CardTitle>
+          <CopyToClipboard content={id} />
+        </CardHeader>
 
-      <CardContent className="flex flex-col md:flex-row md:justify-between">
-        <div className="flex flex-col gap-2 w-full  p-4">
-          <PropertyLine title={"Владелец"} value={owner || "—"} />
-          <PropertyLine title={"Комментарий"} value={comment || "—"} />
-          <PropertyLine
-            title={"Создан"}
-            value={format(createdAt, "dd/MM/yyyy HH:mm") || "—"}
-          />
-          <PropertyLine
-            title={"Истекает"}
-            value={
-              activeBefore ? format(activeBefore, "dd/MM/yyyy HH:mm") : "—"
-            }
-            onEditClick={onExpiredClick}
-          />
-          <PropertyLine
-            title={"Статус"}
-            value={isActive ? "Активен" : "Не активен"}
-            onEditClick={onStatusClick}
-          />
+        <CardContent className="flex flex-col md:flex-row md:justify-between">
+          <div className="flex flex-col gap-2 w-full  p-4">
+            <PropertyLine title={"Владелец"} value={owner || "—"} />
+            <PropertyLine title={"Комментарий"} value={comment || "—"} />
+            <PropertyLine
+              title={"Создан"}
+              value={format(createdAt, "dd/MM/yyyy HH:mm") || "—"}
+            />
+            <PropertyLine
+              title={"Истекает"}
+              value={
+                activeBefore ? format(activeBefore, "dd/MM/yyyy HH:mm") : "—"
+              }
+              onEditClick={onExpiredClick}
+            />
+            <PropertyLine
+              title={"Статус"}
+              value={isActive ? "Активен" : "Не активен"}
+              onEditClick={onStatusClick}
+            />
 
-          <PropertyLine
-            title={"Доступ к закрытым раутам"}
-            value={hasPrivateAccess ? "Есть" : "Нет"}
-          />
+            <PropertyLine
+              title={"Доступ к закрытым раутам"}
+              value={hasPrivateAccess ? "Есть" : "Нет"}
+            />
 
-          <PropertyLine
-            title={"Баланс (points)"}
-            value={String(formattedPoints ?? 0)}
-            onEditClick={onPointsClick}
-          />
-        </div>
-      </CardContent>
-    </Card>
+            <PropertyLine
+              title={"Баланс (points)"}
+              value={String(formattedPoints ?? 0)}
+              onEditClick={onPointsClick}
+            />
+          </div>
+        </CardContent>
+      </Card>
+      <TokenLogs id={tokenId} />
+    </section>
   );
 };

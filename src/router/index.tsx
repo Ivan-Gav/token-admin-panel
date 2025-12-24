@@ -5,6 +5,7 @@ import { routeTree } from "./routeTree.gen";
 
 import { useAuthContext, type AuthContextType } from "../context";
 import { Loading } from "@/components/ui/Loading";
+import { NotFoundPage } from "@/pages";
 
 export interface RouterContext {
   auth: AuthContextType;
@@ -26,7 +27,8 @@ const router = createRouter({
     auth: undefined!, // This will be set after we wrap the app in an AuthProvider
     queryClient: undefined!,
   },
-  defaultPendingComponent: () => <Loading />,
+  defaultPendingComponent: Loading,
+  defaultNotFoundComponent: NotFoundPage,
 });
 
 export const Router = () => {

@@ -30,6 +30,8 @@ apiClient.interceptors.request.use((config) => {
 export const checkIsAuthError = (error: unknown) => {
   return (
     error instanceof AxiosError &&
-    (error.response?.status === 401 || error.response?.status === 403)
+    (error.response?.status === 401 ||
+      error.response?.status === 403 ||
+      error.response?.data?.message?.error === "token disabled") // сделать чтобы бэк возвращал 401 или 403
   );
 };

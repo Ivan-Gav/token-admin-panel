@@ -17,7 +17,7 @@ export type Token = {
 
 export type TokenCreateResponseData = {
   params: Token;
-  token: string;
+  token: string; // <= token_id
 };
 
 export type TokenCreateData = {
@@ -35,3 +35,13 @@ export type TokenListResponse = Response<{
   };
   tokens: Token[];
 }>;
+
+export type TokenLogItem = {
+  endpoint_path: string;
+  id: string;
+  price: number;
+  success: boolean;
+  timestamp: string;
+  token_id: string;
+  trace_id: string;
+};

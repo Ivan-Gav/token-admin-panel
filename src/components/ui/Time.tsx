@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import { format, parseISO } from "date-fns";
 
 export const Time = ({
   timestring,
@@ -7,7 +7,7 @@ export const Time = ({
   timestring: string;
   title?: string;
 }) => {
-  const time = dayjs(timestring).format("DD/MM/YYYY HH:mm");
+  const time = format(parseISO(timestring), "dd/MM/yyyy HH:mm");
 
   return <span title={title}>{time}</span>;
 };
