@@ -29,7 +29,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
   return (
     <li
       className="list-none bg-white text-slate-950 flex flex-col rounded-xl border
-    border-slate-200 shadow-sm dark:bg-slate-950 dark:text-slate-50 dark:border-slate-800 w-full max-w-3xl"
+    border-slate-200 shadow-sm dark:bg-slate-950 dark:text-slate-50 dark:border-slate-800 w-full max-w-200"
     >
       <div className="flex justify-between gap-4 p-4 items-center border-b w-auto">
         <div

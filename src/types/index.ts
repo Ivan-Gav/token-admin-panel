@@ -17,7 +17,7 @@ export type Token = {
 
 export type TokenCreateResponseData = {
   params: Token;
-  token: string; // <= token_id
+  token: string;
 };
 
 export type TokenCreateData = {

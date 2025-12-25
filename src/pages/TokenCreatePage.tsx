@@ -110,7 +110,7 @@ export const TokenCreatePage = () => {
             <Field>
               <FieldLabel htmlFor={field.name}>Владелец</FieldLabel>
               <Input
-                placeholder="Мария Кирсанова"
+                placeholder="Имя Фамилия"
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
@@ -157,11 +157,11 @@ export const TokenCreatePage = () => {
           )}
         />
 
-        <FieldSet className="md:flex-row">
+        <FieldSet>
           <form.Field
             name="points"
             children={(field) => (
-              <Field>
+              <Field className="max-w-48">
                 <FieldLabel htmlFor={field.name}>Баланс (points)</FieldLabel>
                 <Input
                   placeholder="1 000 000"
@@ -186,7 +186,7 @@ export const TokenCreatePage = () => {
           <form.Field
             name="active_before"
             children={({ name, state, handleChange }) => (
-              <Field className="w-fit">
+              <Field className="max-w-48">
                 <FieldLabel htmlFor={name}>Действителен до</FieldLabel>
                 <DatePicker
                   dateString={state.value}
