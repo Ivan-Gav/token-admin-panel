@@ -36,6 +36,20 @@ export function DateRangePicker({ from, to, onUpdate }: DateRangePickerProps) {
     onUpdate(undefined, undefined);
   };
 
+  const handleSelect = (range: DateRange | undefined) => {
+    if (!range?.from) {
+      onUpdate(undefined, undefined);
+      return;
+    }
+
+    const newFrom = startOfDay(range.from).toISOString();
+    const newTo = endOfDay(range.to || range.from).toISOString();
+
+    if (newFrom !== from || newTo !== to) {
+      onUpdate(newFrom, newTo);
+    }
+  };
+
   return (
     <div className="flex items-center max-w-full">
       <Popover>
@@ -52,11 +66,11 @@ export function DateRangePicker({ from, to, onUpdate }: DateRangePickerProps) {
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(startOfDay(date.from), "LLL dd, y", { locale: ru })} -{" "}
-                  {format(endOfDay(date.to), "LLL dd, y", { locale: ru })}
+                  {format(date.from, "LLL dd, y", { locale: ru })} -{" "}
+                  {format(date.to, "LLL dd, y", { locale: ru })}
                 </>
               ) : (
-                format(startOfDay(date.from), "LLL dd, y", { locale: ru })
+                format(date.from, "LLL dd, y", { locale: ru })
               )
             ) : (
               <span>Выбрать интервал</span>
@@ -66,13 +80,10 @@ export function DateRangePicker({ from, to, onUpdate }: DateRangePickerProps) {
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
             mode="range"
+            min={1}
             defaultMonth={date?.from}
             selected={date}
-            onSelect={(range) => {
-              if (range?.from && range?.to) {
-                onUpdate(range.from.toISOString(), range.to.toISOString());
-              }
-            }}
+            onSelect={handleSelect}
             numberOfMonths={2}
           />
         </PopoverContent>

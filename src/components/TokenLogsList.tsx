@@ -15,6 +15,7 @@ import { Button } from "./ui/Button";
 import { api, apiClient } from "@/api";
 import type { Response, TokenLogItem } from "@/types";
 import { LimitInput } from "./LimitInput";
+import { EmptyLogs } from "./EmptyLogs";
 
 const DEFAULT_LIMIT = 20;
 
@@ -56,7 +57,7 @@ export const TokenLogsList = ({ id }: Props) => {
         requestBody
       );
 
-      return response.data.data;
+      return response.data.data || [];
     },
     placeholderData: keepPreviousData,
   });
@@ -72,6 +73,7 @@ export const TokenLogsList = ({ id }: Props) => {
           from={start}
           to={end}
           onUpdate={(f, t) => {
+            setPage(0);
             setStart(f);
             setEnd(t);
           }}
@@ -82,12 +84,14 @@ export const TokenLogsList = ({ id }: Props) => {
       <div>
         {isLoading ? (
           <Loading />
-        ) : (
+        ) : !!displayData?.length ? (
           <ul className="divide-y list-none">
             {displayData?.map((item) => (
               <TokenLogsItem key={item.id} item={item} />
             ))}
           </ul>
+        ) : (
+          <EmptyLogs />
         )}
       </div>
 

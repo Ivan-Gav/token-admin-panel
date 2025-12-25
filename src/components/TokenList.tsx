@@ -36,9 +36,6 @@ export const TokenList = () => {
           offset: pageParam * 5,
         },
       });
-
-      // const response = await fetch(`/api/projects?cursor=${pageParam}`);
-      // return await response.json();
     },
     initialPageParam: 0,
     getPreviousPageParam: (firstPage) => firstPage.previousId,
@@ -67,8 +64,8 @@ export const TokenList = () => {
               {isFetchingPreviousPage
                 ? "Loading more..."
                 : hasPreviousPage
-                ? "Load Older"
-                : "Nothing more to load"}
+                  ? "Load Older"
+                  : "Nothing more to load"}
             </button>
           </div>
           {data.pages.map((page) => (
@@ -87,8 +84,8 @@ export const TokenList = () => {
               {isFetchingNextPage
                 ? "Loading more..."
                 : hasNextPage
-                ? "Load Newer"
-                : "Nothing more to load"}
+                  ? "Load Newer"
+                  : "Nothing more to load"}
             </button>
           </div>
           <div>
