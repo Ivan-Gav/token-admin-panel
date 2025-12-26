@@ -57,9 +57,10 @@ export const TokenPage = () => {
     points,
   } = data.data.data.data;
 
-  const formattedPoints = points
-    ? new Intl.NumberFormat("ru-RU").format(points)
-    : "0";
+  const formattedPoints =
+    points || points === 0
+      ? new Intl.NumberFormat("ru-RU").format(points)
+      : "—";
 
   const onStatusClick = () => {
     onOpen("changeStatus", { id, active: isActive });
