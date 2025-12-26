@@ -1,6 +1,7 @@
 import { ChangePointsModal } from "./ChangePointsModal";
 import { ChangeStatusModal } from "./ChangeStatusModal";
 import { ChangeTimeoutModal } from "./ChangeTimeoutModal";
+import { ConfirmPrivateAccessModal } from "./ConfirmPrivateAccessModal";
 import { CreateSuccessModal } from "./CreateSuccessModal";
 
 export const ModalProvider = () => {
@@ -10,6 +11,7 @@ export const ModalProvider = () => {
       <ChangeStatusModal />
       <ChangeTimeoutModal />
       <ChangePointsModal />
+      <ConfirmPrivateAccessModal />
     </>
   );
 };

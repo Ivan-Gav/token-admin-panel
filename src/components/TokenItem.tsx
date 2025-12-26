@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 import type { Token } from "../types";
 import ActiveIcon from "@/assets/active.svg?react";
 import AccessIcon from "@/assets/access.svg?react";
-import ZeroIcon from "@/assets/zero.svg?react";
 import { Time } from "./ui";
 import { Button } from "./ui/Button";
 import { CopyToClipboard } from "./ui/CopyToClipboard";
@@ -22,9 +21,10 @@ export const TokenItem = ({ item }: { item: Token }) => {
     points,
   } = item;
 
-  const formattedPoints = points
-    ? new Intl.NumberFormat("ru-RU").format(points)
-    : "0";
+  const formattedPoints =
+    points || points === 0
+      ? new Intl.NumberFormat("ru-RU").format(points)
+      : "—";
 
   return (
     <li
@@ -84,7 +84,9 @@ export const TokenItem = ({ item }: { item: Token }) => {
             params={{ id }}
             className="w-fit justify-self-end mt-auto hidden md:block"
           >
-            <Button variant={"link"}>{"Открыть"}</Button>
+            <Button variant={"outline"} size={"lg"}>
+              {"Открыть"}
+            </Button>
           </Link>
         </div>
 
@@ -122,11 +124,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
           <hr />
 
           <div className="w-full flex flex-col items-center gap-1">
-            {points ? (
-              <div className="text-2xl font-bold">{formattedPoints}</div>
-            ) : (
-              <ZeroIcon className="w-12 h-12 opacity-20" />
-            )}
+            <div className="text-2xl font-bold">{formattedPoints}</div>
 
             {/* <div className="text-xl font-semibold">{"Баланс"}</div> */}
           </div>
@@ -136,7 +134,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
             params={{ id }}
             className="w-fit self-center md:hidden"
           >
-            <Button variant={"link"}>{"Открыть"}</Button>
+            <Button variant={"outline"}>{"Открыть"}</Button>
           </Link>
         </div>
       </div>

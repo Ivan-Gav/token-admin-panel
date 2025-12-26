@@ -9,9 +9,14 @@ import ChevronDownIcon from "@/assets/chevron.svg?react";
 type Props = {
   dateString: string | undefined;
   setDateString: (date: string | undefined) => void;
+  disabled?: boolean;
 };
 
-export function DatePicker({ dateString, setDateString }: Props) {
+export function DatePicker({
+  dateString,
+  setDateString,
+  disabled = false,
+}: Props) {
   const [open, setOpen] = useState(false);
 
   const date = dateString ? parseJSON(dateString) : undefined;
@@ -24,6 +29,7 @@ export function DatePicker({ dateString, setDateString }: Props) {
             variant="outline"
             id="date"
             className="w-48 justify-between font-normal"
+            disabled={disabled}
           >
             {date ? date.toLocaleDateString() : "Выбрать дату"}
             <ChevronDownIcon />

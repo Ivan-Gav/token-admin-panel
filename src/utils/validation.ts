@@ -15,6 +15,8 @@ export const createTokenSchema = z
         message: "Здесь должно быть положительное целое число",
       })
       .optional(),
+    has_active_before: z.boolean(),
+    has_points: z.boolean(),
   })
   .superRefine((data, ctx) => {
     if (!data.owner && !data.comment) {

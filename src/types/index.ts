@@ -28,6 +28,11 @@ export type TokenCreateData = {
   points?: number;
 };
 
+export type TokenCreateDataForm = {
+  has_points: boolean;
+  has_active_before: boolean;
+} & TokenCreateData;
+
 export type TokenListResponse = Response<{
   params: {
     limit: number;

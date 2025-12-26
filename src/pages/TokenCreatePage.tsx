@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import type {
   Response,
   TokenCreateData,
+  TokenCreateDataForm,
   TokenCreateResponseData,
 } from "@/types";
 import { createTokenSchema } from "@/utils/validation";
@@ -27,12 +28,14 @@ import { useNavigate } from "@tanstack/react-router";
 import { useModalStore } from "@/store/useModalStore";
 
 export const TokenCreatePage = () => {
-  const defaultValues: TokenCreateData = {
+  const defaultValues: TokenCreateDataForm = {
     owner: "",
     comment: "",
     active_before: undefined,
     points: 0,
     has_private_access: false,
+    has_active_before: false,
+    has_points: false,
   };
 
   const queryClient = useQueryClient();
@@ -42,6 +45,7 @@ export const TokenCreatePage = () => {
 
   const mutation = useMutation({
     mutationFn: async (value: TokenCreateData) => {
+      console.log("submitted value: ", value);
       const response = await apiClient.post<Response<TokenCreateResponseData>>(
         api.createToken,
         value
@@ -61,9 +65,32 @@ export const TokenCreatePage = () => {
     },
   });
 
-  const onSubmit = async ({ value }: { value: TokenCreateData }) => {
+  const onSubmit = async ({ value }: { value: TokenCreateDataForm }) => {
+    // поля has_active_before, has_points не отправляем на бэк
+    const { has_active_before, has_points, ...formData } = value;
+
+    // подгоняем дату под требования бэка
+    const adjustedFormData = has_points
+      ? formData
+      : { ...formData, points: undefined };
+
+    // подтверждение если has_private_access
+    if (adjustedFormData.has_private_access) {
+      const proceed = await new Promise<boolean>((resolve) => {
+        onOpen("confirmPrivateAccess", { resolve });
+      });
+
+      if (!proceed) {
+        return;
+      }
+    }
+
     try {
-      await mutation.mutateAsync(createTokenSchema.parse(value));
+      await mutation.mutateAsync(
+        createTokenSchema
+          .omit({ has_active_before: true, has_points: true })
+          .parse(adjustedFormData)
+      );
     } catch (error) {
       console.log("error: ", error);
       console.log("message: ", getApiError(error));
@@ -157,45 +184,111 @@ export const TokenCreatePage = () => {
           )}
         />
 
-        <FieldSet>
+        <FieldSet className="border rounded-md p-4">
           <form.Field
-            name="points"
-            children={(field) => (
-              <Field className="max-w-48">
-                <FieldLabel htmlFor={field.name}>Баланс (points)</FieldLabel>
-                <Input
-                  placeholder="1 000 000"
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    const value = Number(e.target.value.replace(/\D/g, ""));
-                    field.handleChange(value);
-                  }}
+            name="has_points"
+            listeners={{
+              onChange: ({ value }) => {
+                // чекбокс активации для points
+                if (!value) {
+                  form.setFieldValue("points", 0);
+                }
+              },
+            }}
+            children={({ name, state, handleChange, handleBlur }) => (
+              <Field orientation="horizontal">
+                <Checkbox
+                  id={name}
+                  onCheckedChange={(checked) => handleChange(checked === true)}
+                  onBlur={handleBlur}
+                  checked={state.value}
                 />
-                <FieldError className="whitespace-pre">
-                  {field.state.meta.errors
-                    .map((error) => error?.message)
-                    .join("\n")}
-                </FieldError>
-              </Field>
-            )}
-          />
-
-          <form.Field
-            name="active_before"
-            children={({ name, state, handleChange }) => (
-              <Field className="max-w-48">
-                <FieldLabel htmlFor={name}>Действителен до</FieldLabel>
-                <DatePicker
-                  dateString={state.value}
-                  setDateString={handleChange}
-                />
+                <FieldLabel htmlFor={name}>Указать баланс (points)</FieldLabel>
                 <FieldError className="whitespace-pre">
                   {state.meta.errors.map((error) => error?.message).join("\n")}
                 </FieldError>
               </Field>
+            )}
+          ></form.Field>
+
+          <form.Subscribe
+            selector={(state) => state.values.has_points}
+            children={(isChecked) => (
+              <form.Field
+                name="points"
+                children={(field) => (
+                  <Field className="max-w-48">
+                    <Input
+                      placeholder="1 000 000"
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      disabled={!isChecked}
+                      onChange={(e) => {
+                        const value = Number(e.target.value.replace(/\D/g, ""));
+                        field.handleChange(value);
+                      }}
+                    />
+                    <FieldError className="whitespace-pre">
+                      {field.state.meta.errors
+                        .map((error) => error?.message)
+                        .join("\n")}
+                    </FieldError>
+                  </Field>
+                )}
+              />
+            )}
+          />
+        </FieldSet>
+
+        <FieldSet className="border rounded-md p-4">
+          <form.Field
+            name="has_active_before"
+            listeners={{
+              onChange: ({ value }) => {
+                // чекбокс активации для active_before
+                if (!value) {
+                  form.setFieldValue("active_before", undefined);
+                }
+              },
+            }}
+            children={({ name, state, handleChange, handleBlur }) => (
+              <Field orientation="horizontal">
+                <Checkbox
+                  id={name}
+                  onCheckedChange={(checked) => handleChange(checked === true)}
+                  onBlur={handleBlur}
+                  checked={state.value}
+                />
+                <FieldLabel htmlFor={name}>Указать срок действия</FieldLabel>
+                <FieldError className="whitespace-pre">
+                  {state.meta.errors.map((error) => error?.message).join("\n")}
+                </FieldError>
+              </Field>
+            )}
+          ></form.Field>
+
+          <form.Subscribe
+            selector={(state) => state.values.has_active_before}
+            children={(isChecked) => (
+              <form.Field
+                name="active_before"
+                children={({ state, handleChange }) => (
+                  <Field className="max-w-48">
+                    <DatePicker
+                      dateString={state.value}
+                      setDateString={handleChange}
+                      disabled={!isChecked}
+                    />
+                    <FieldError className="whitespace-pre">
+                      {state.meta.errors
+                        .map((error) => error?.message)
+                        .join("\n")}
+                    </FieldError>
+                  </Field>
+                )}
+              />
             )}
           />
         </FieldSet>
@@ -211,7 +304,7 @@ export const TokenCreatePage = () => {
                 checked={state.value}
               />
               <FieldLabel htmlFor={name} className="font-normal">
-                Предоставить доступ к приватным раутам
+                Предоставить доступ к приватным методам
               </FieldLabel>
               <FieldError className="whitespace-pre">
                 {state.meta.errors.map((error) => error?.message).join("\n")}

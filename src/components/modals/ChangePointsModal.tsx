@@ -1,5 +1,3 @@
-"use client";
-
 import { useModalStore } from "@/store/useModalStore";
 import {
   Dialog,
@@ -15,7 +13,7 @@ import { api, apiClient } from "@/api";
 import type { Response } from "@/types";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { getApiError } from "@/utils/errorHandling";
-import { Field, FieldError, FieldSet } from "../ui/Field";
+import { FieldError, FieldSet } from "../ui/Field";
 
 import { Input } from "../ui/Input";
 

@@ -2,7 +2,7 @@ import { apiClient, api } from "@/api";
 import type { Token, Response, TokenListResponse } from "@/types";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 
-const LIMIT = 1;
+const LIMIT = 10;
 
 export const tokensQueryOptions = infiniteQueryOptions({
   queryKey: ["tokens"],
@@ -42,3 +42,5 @@ export const tokenQueryOptions = (id: string) =>
     queryFn: () =>
       apiClient.get<Response<Token>>(`${api.getToken}?token_id=${id}`),
   });
+
+//-------------------------------------------------------------

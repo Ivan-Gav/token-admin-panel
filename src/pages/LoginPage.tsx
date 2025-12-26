@@ -11,7 +11,7 @@ const PasswordInput = ({
   className,
   ...props
 }: InputHTMLAttributes<HTMLInputElement>) => {
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="relative">

@@ -6,6 +6,10 @@ interface ModalData {
   changeStatus: { id: string; active: boolean };
   changeTimeout: { id: string; timeout?: string };
   changePoints: { id: string; points?: number };
+  confirmPrivateAccess: {
+    id?: string;
+    resolve: (value: boolean | PromiseLike<boolean>) => void;
+  };
 }
 
 type ModalType = keyof ModalData;
