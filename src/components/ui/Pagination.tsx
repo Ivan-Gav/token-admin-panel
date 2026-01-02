@@ -8,6 +8,7 @@ import {
 import { cn } from "@/lib/utils";
 import { type Button } from "@/components/ui/Button";
 import { buttonVariants } from "./buttonVariants";
+import { LABELS } from "@/constants";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -72,13 +73,13 @@ function PaginationPrevious({
 }: React.ComponentProps<typeof PaginationLink>) {
   return (
     <PaginationLink
-      aria-label="К предыдущей странице"
+      aria-label={LABELS.toPrevPage}
       size="default"
       className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
       {...props}
     >
       <ChevronLeftIcon />
-      <span className="hidden sm:block">Назад</span>
+      <span className="hidden sm:block">{LABELS.prev}</span>
     </PaginationLink>
   );
 }
@@ -89,12 +90,12 @@ function PaginationNext({
 }: React.ComponentProps<typeof PaginationLink>) {
   return (
     <PaginationLink
-      aria-label="К следующей странице"
+      aria-label={LABELS.toNextPage}
       size="default"
       className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
       {...props}
     >
-      <span className="hidden sm:block">Вперед</span>
+      <span className="hidden sm:block">{LABELS.next}</span>
       <ChevronRightIcon />
     </PaginationLink>
   );
@@ -112,7 +113,7 @@ function PaginationEllipsis({
       {...props}
     >
       <MoreHorizontalIcon className="size-4" />
-      <span className="sr-only">Другие страницы</span>
+      <span className="sr-only">{LABELS.morePages}</span>
     </span>
   );
 }

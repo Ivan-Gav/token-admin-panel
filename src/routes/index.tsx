@@ -26,7 +26,9 @@ export const Route = createFileRoute("/")({
 
     // prefetch the first page
     try {
-      return await queryClient.ensureInfiniteQueryData(tokensQueryOptions);
+      const response =
+        await queryClient.ensureInfiniteQueryData(tokensQueryOptions);
+      return response;
     } catch (error) {
       if (checkIsAuthError(error)) {
         console.log(`auth error`);

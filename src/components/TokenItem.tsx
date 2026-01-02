@@ -3,9 +3,10 @@ import { Link } from "@tanstack/react-router";
 import type { Token } from "../types";
 import ActiveIcon from "@/assets/active.svg?react";
 import AccessIcon from "@/assets/access.svg?react";
-import { Time } from "./ui";
+import { Time } from "./ui/Time";
 import { Button } from "./ui/Button";
 import { CopyToClipboard } from "./ui/CopyToClipboard";
+import { LABELS } from "@/constants";
 
 //-----------------------------------------------------------
 
@@ -34,7 +35,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
       <div className="flex justify-between gap-4 p-4 items-center border-b w-auto">
         <div
           className="overflow-hidden text-ellipsis text-xl font-semibold"
-          title="Идентификационный номер токена"
+          title={LABELS.tokenId}
         >
           {id}
         </div>
@@ -46,7 +47,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
           {!!owner && (
             <div>
               <span className="font-semibold inline-block min-w-30">
-                {"Владелец: "}
+                {`${LABELS.owner}: `}
               </span>
               <span>{owner}</span>
             </div>
@@ -55,7 +56,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
           {!!comment && (
             <div className="line-clamp-4">
               <span className="font-semibold inline-block min-w-30">
-                {"Комментарий: "}
+                {`${LABELS.comment}: `}
               </span>
               <span>{comment}</span>
             </div>
@@ -63,17 +64,17 @@ export const TokenItem = ({ item }: { item: Token }) => {
 
           <div className="">
             <span className="font-semibold inline-block min-w-30">
-              {"Создан: "}
+              {`${LABELS.createdAt}: `}
             </span>
-            <Time timestring={createdAt} title="создан" />
+            <Time timestring={createdAt} title={LABELS.createdAt} />
           </div>
 
           <div className="">
             <span className="font-semibold inline-block min-w-30">
-              {"Истекает: "}
+              {`${LABELS.activeBefore}: `}
             </span>
             {activeBefore ? (
-              <Time timestring={activeBefore} title="истекает" />
+              <Time timestring={activeBefore} title={LABELS.activeBefore} />
             ) : (
               "—"
             )}
@@ -85,7 +86,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
             className="w-fit justify-self-end mt-auto hidden md:block"
           >
             <Button variant={"outline"} size={"lg"}>
-              {"Открыть"}
+              {LABELS.details}
             </Button>
           </Link>
         </div>
@@ -94,12 +95,12 @@ export const TokenItem = ({ item }: { item: Token }) => {
           <div className="flex justify-between">
             {isActive ? (
               <>
-                <div>{"Активен"}</div>
+                <div>{LABELS.active}</div>
                 <ActiveIcon className="text-green-600 min-w-6" />
               </>
             ) : (
               <>
-                <div>{"Не активен"}</div>
+                <div>{LABELS.disabled}</div>
                 <ActiveIcon className="opacity-10 min-w-6" />
               </>
             )}
@@ -108,14 +109,12 @@ export const TokenItem = ({ item }: { item: Token }) => {
           <div className="flex justify-between">
             {hasPrivateAccess ? (
               <>
-                <div className="text-wrap">{"Доступ к закрытым раутам"}</div>
+                <div className="text-wrap">{LABELS.hasPrivateAccess}</div>
                 <AccessIcon className="text-green-600 min-w-6" />
               </>
             ) : (
               <>
-                <div className="text-wrap shrink">
-                  {"Нет доступа к закрытым раутам"}
-                </div>
+                <div className="text-wrap shrink">{LABELS.noPrivateAccess}</div>
                 <AccessIcon className="opacity-20 min-w-6" />
               </>
             )}
@@ -125,8 +124,6 @@ export const TokenItem = ({ item }: { item: Token }) => {
 
           <div className="w-full flex flex-col items-center gap-1">
             <div className="text-2xl font-bold">{formattedPoints}</div>
-
-            {/* <div className="text-xl font-semibold">{"Баланс"}</div> */}
           </div>
 
           <Link
@@ -134,7 +131,7 @@ export const TokenItem = ({ item }: { item: Token }) => {
             params={{ id }}
             className="w-fit self-center md:hidden"
           >
-            <Button variant={"outline"}>{"Открыть"}</Button>
+            <Button variant={"outline"}>{LABELS.details}</Button>
           </Link>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Button } from "./ui/Button";
 import { Calendar } from "./ui/Calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
 import ChevronDownIcon from "@/assets/chevron.svg?react";
+import { LABELS } from "@/constants";
 
 type Props = {
   dateString: string | undefined;
@@ -19,6 +20,7 @@ export function DatePicker({
 }: Props) {
   const [open, setOpen] = useState(false);
 
+  const currentDate = new Date();
   const date = dateString ? parseJSON(dateString) : undefined;
 
   return (
@@ -31,7 +33,7 @@ export function DatePicker({
             className="w-48 justify-between font-normal"
             disabled={disabled}
           >
-            {date ? date.toLocaleDateString() : "Выбрать дату"}
+            {date ? date.toLocaleDateString() : LABELS.selectDate}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
@@ -40,6 +42,7 @@ export function DatePicker({
             mode="single"
             selected={date}
             captionLayout="dropdown"
+            startMonth={currentDate}
             onSelect={(date) => {
               setDateString(date ? date.toISOString() : undefined);
               setOpen(false);

@@ -1,3 +1,4 @@
+import { ERRORS, LABELS } from "@/constants";
 import { endOfDay, isBefore, parseJSON, startOfDay } from "date-fns";
 import { z } from "zod";
 
@@ -5,14 +6,14 @@ export const createTokenSchema = z
   .object({
     owner: z.string().optional(),
     active_before: z.iso
-      .datetime({ message: "Неверный формат даты" })
+      .datetime({ message: ERRORS.wrongDateFormat })
       .optional(),
-    has_private_access: z.boolean({ message: "Обязательное поле" }),
+    has_private_access: z.boolean({ message: ERRORS.required }),
     comment: z.string().optional(),
     points: z
       .int()
       .nonnegative({
-        message: "Здесь должно быть положительное целое число",
+        message: ERRORS.nonNegativeInteger,
       })
       .optional(),
     has_active_before: z.boolean(),
@@ -22,8 +23,7 @@ export const createTokenSchema = z
     if (!data.owner && !data.comment) {
       ctx.addIssue({
         code: "custom",
-        message:
-          "Хотя бы одно из полей 'Владелец' или 'Комментарий' должно быть заполнено",
+        message: ERRORS.oneOfFieldsRequired(LABELS.owner, LABELS.comment),
         path: ["owner"],
       });
       return;
@@ -31,14 +31,14 @@ export const createTokenSchema = z
     if (data.owner && data.owner.length < 3) {
       ctx.addIssue({
         code: "custom",
-        message: "Имя слишком короткое (мин - 3 символа)",
+        message: ERRORS.shortText(3),
         path: ["owner"],
       });
     }
     if (data.comment && data.comment.length < 5) {
       ctx.addIssue({
         code: "custom",
-        message: "Комментарий слишком короткий (мин - 5 символов)",
+        message: ERRORS.shortText(5),
         path: ["comment"],
       });
     }
@@ -51,7 +51,7 @@ export const createTokenSchema = z
         if (isBefore(date, today)) {
           ctx.addIssue({
             code: "custom",
-            message: "Дата окончания срока действия должна быть в будущем",
+            message: ERRORS.pastDate,
             path: ["active_before"],
           });
         }

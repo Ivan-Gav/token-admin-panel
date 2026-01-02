@@ -20,13 +20,7 @@ export type TokenCreateResponseData = {
   token: string;
 };
 
-export type TokenCreateData = {
-  active_before?: string;
-  comment?: string;
-  has_private_access: boolean;
-  owner?: string;
-  points?: number;
-};
+export type TokenCreateData = Omit<Token, "id" | "is_active" | "created_at">;
 
 export type TokenCreateDataForm = {
   has_points: boolean;
@@ -49,4 +43,16 @@ export type TokenLogItem = {
   timestamp: string;
   token_id: string;
   trace_id: string;
+};
+
+export type TokenLogRequest = {
+  last: {
+    limit: number;
+    skip: number;
+  };
+  period?: {
+    start: string;
+    end: string;
+  };
+  token_id: string;
 };

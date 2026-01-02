@@ -9,7 +9,6 @@ import {
   getDefaultClassNames,
   type DayButton,
 } from "react-day-picker";
-import { ru } from "react-day-picker/locale";
 import { add } from "date-fns";
 
 import { cn } from "@/lib/utils";
@@ -24,6 +23,7 @@ function Calendar({
   buttonVariant = "ghost",
   formatters,
   components,
+  startMonth,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
@@ -35,8 +35,7 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      locale={ru}
-      startMonth={currentDate}
+      startMonth={startMonth}
       endMonth={endDate}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",

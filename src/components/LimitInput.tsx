@@ -1,5 +1,6 @@
 import { useState, useEffect, type ComponentProps } from "react";
 import { Input } from "@/components/ui/Input";
+import { LABELS } from "@/constants";
 
 type Props = {
   limit: number;
@@ -28,7 +29,7 @@ export function LimitInput({ limit, setLimit }: Props) {
   return (
     <div className="flex items-center gap-2">
       <span className="hidden sm:inline text-sm font-medium">
-        Логов на странице:
+        {`${LABELS.logsPerPage}:`}
       </span>
       <Input
         type="number"

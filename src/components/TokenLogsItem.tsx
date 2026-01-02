@@ -1,9 +1,10 @@
 import type { TokenLogItem } from "@/types";
 import SuccessIcon from "@/assets/active.svg?react";
 import FailureIcon from "@/assets/circle-close.svg?react";
-import { Time } from "./ui";
+import { Time } from "./ui/Time";
 import type { PropsWithChildren } from "react";
 import { cn } from "@/lib/utils";
+import { LABELS } from "@/constants";
 
 //-----------------------------------------------------------
 
@@ -50,19 +51,19 @@ export const TokenLogsItem = ({ item }: Props) => {
       )}
     >
       <Line>
-        <Name>{"Время: "}</Name>
+        <Name>{`${LABELS.time}: `}</Name>
         <Time timestring={timestamp} />
       </Line>
       <Line>
-        <Name>{"Эндпойнт: "}</Name>
+        <Name>{`${LABELS.endpoint}: `}</Name>
         <span>{endpointPath}</span>
       </Line>
       <Line>
-        <Name>{"Цена: "}</Name>
+        <Name>{`${LABELS.price}: `}</Name>
         <span>{price}</span>
       </Line>
       <Line>
-        <Name>{"Trace id: "}</Name>
+        <Name>{`${LABELS.traceId}: `}</Name>
         <span>{traceId}</span>
       </Line>
       <Status success={success} />

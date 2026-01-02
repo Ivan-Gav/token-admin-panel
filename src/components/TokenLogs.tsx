@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/Collapsible";
 import Chevron from "@/assets/chevron.svg?react";
 import { TokenLogsList } from "./TokenLogsList";
+import { LABELS } from "@/constants";
 
 type Props = {
   id: string;
@@ -18,7 +19,7 @@ export const TokenLogs = ({ id }: Props) => {
     >
       <Collapsible>
         <div className="flex justify-between items-center py-2 px-4">
-          <div>{"Логи использования токена"}</div>
+          <div>{LABELS.tokenLogs}</div>
           <CollapsibleTrigger>
             <Chevron />
           </CollapsibleTrigger>

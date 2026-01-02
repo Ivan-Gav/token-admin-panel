@@ -1,5 +1,3 @@
-"use client";
-
 import { useModalStore } from "@/store/useModalStore";
 import {
   Dialog,
@@ -18,6 +16,7 @@ import type { Response } from "@/types";
 import { useEffect, useState } from "react";
 import { getApiError } from "@/utils/errorHandling";
 import { FieldError, FieldSet } from "../ui/Field";
+import { LABELS } from "@/constants";
 
 export const ChangeStatusModal = () => {
   const { isOpen, onClose, type, data } = useModalStore();
@@ -71,7 +70,7 @@ export const ChangeStatusModal = () => {
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{"Изменить статус токена"}</DialogTitle>
+          <DialogTitle>{LABELS.changeTokenStatus}</DialogTitle>
         </DialogHeader>
         <div className="overflow-hidden flex flex-col gap-4">
           <div className="flex justify-between items-center w-full p-2 border rounded-sm">
@@ -97,7 +96,7 @@ export const ChangeStatusModal = () => {
               }}
             />
             <Label htmlFor="terms" className="text-xl">
-              {"Токен активен"}
+              {LABELS.active}
             </Label>
           </div>
           <FieldError>{error}</FieldError>
@@ -105,7 +104,7 @@ export const ChangeStatusModal = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant={"outline"} className="min-w-42" onClick={onClose}>
-            {"Отменить"}
+            {LABELS.cancel}
           </Button>
 
           <Button
@@ -113,7 +112,7 @@ export const ChangeStatusModal = () => {
             disabled={active === initialActive || isPending || !!error}
             onClick={handleSubmit}
           >
-            {"Подтвердить"}
+            {LABELS.submit}
           </Button>
         </div>
       </DialogContent>

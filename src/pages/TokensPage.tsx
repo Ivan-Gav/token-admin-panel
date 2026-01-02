@@ -8,6 +8,7 @@ import { TokenItem } from "@/components/TokenItem";
 import { useNavigate } from "@tanstack/react-router";
 import { tokensQueryOptions } from "@/utils/queryOptions";
 import { Loading } from "@/components/ui/Loading";
+import { LABELS } from "@/constants";
 
 export const TokensPage = () => {
   const { setIsAuthError, setApiKey } = useAuthContext();
@@ -46,15 +47,23 @@ export const TokensPage = () => {
 
   if (error && !checkIsAuthError(error)) {
     console.log("auth error");
-    return <div className="p-8 text-red-600">Error: {error.message}</div>;
+    return (
+      <div className="p-8 text-red-600">
+        `${LABELS.error}: ${error.message}`
+      </div>
+    );
   }
 
   if (status === "pending") {
-    return <div>Загрузка...</div>;
+    return <Loading />;
   }
 
   if (status === "error") {
-    return <div>Ошибка: {error.message}</div>;
+    return (
+      <div>
+        `${LABELS.error}: ${error.message}`
+      </div>
+    );
   }
 
   const allTokens = data.pages
@@ -67,12 +76,11 @@ export const TokensPage = () => {
         <TokenItem item={item} key={item.id} />
       ))}
 
-      {/* Триггер для загрузки следующей страницы */}
       <div ref={ref} className="loader-trigger">
         {isFetchingNextPage ? (
           <Loading />
         ) : (
-          !hasNextPage && <div>Все токены загружены</div>
+          !hasNextPage && <div>{LABELS.allTokensLoaded}</div>
         )}
       </div>
     </ul>

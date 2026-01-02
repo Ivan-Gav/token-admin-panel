@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ERRORS, LABELS } from "@/constants";
 
 const PasswordInput = ({
   className,
@@ -18,7 +19,7 @@ const PasswordInput = ({
       <Input
         {...props}
         type={showPassword ? "text" : "password"}
-        placeholder="Введите пароль"
+        placeholder={LABELS.enterKey}
         className={cn(
           "pr-10 md:text-xl h-auto min-w-[50vw] max-w-180",
           className
@@ -37,7 +38,7 @@ const PasswordInput = ({
           <EyeOffIcon className="h-6 w-6" aria-hidden="true" />
         )}
         <span className="sr-only">
-          {showPassword ? "Скрыть пароль" : "Показать пароль"}
+          {showPassword ? LABELS.showKey : LABELS.hideKey}
         </span>
       </Button>
     </div>
@@ -73,7 +74,7 @@ export const LoginPage = () => {
           onChange={(e) => setValue(e.target.value)}
         />
         <FieldError className="md:text-xl">
-          {isAuthError ? "Неверный токен. Попробуйте снова" : ""}
+          {isAuthError ? ERRORS.wrongKey : ""}
         </FieldError>
       </Field>
       <Button
@@ -82,7 +83,7 @@ export const LoginPage = () => {
         size={"lg"}
         className="md:text-xl w-fit"
       >
-        {"Отправить"}
+        {LABELS.submit}
       </Button>
     </form>
   );

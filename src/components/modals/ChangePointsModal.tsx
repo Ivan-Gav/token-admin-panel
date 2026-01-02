@@ -16,6 +16,7 @@ import { getApiError } from "@/utils/errorHandling";
 import { FieldError, FieldSet } from "../ui/Field";
 
 import { Input } from "../ui/Input";
+import { ERRORS, LABELS } from "@/constants";
 
 //--------------------------------------------------------------------
 
@@ -68,7 +69,7 @@ export const ChangePointsModal = () => {
     const newSum = parseInt(cleaned, 10);
 
     if (newSum < 0) {
-      setError("Баланс не может быть отрицательным");
+      setError(ERRORS.negativePoints);
     } else {
       setError(null);
     }
@@ -108,7 +109,7 @@ export const ChangePointsModal = () => {
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{"Изменить баланс"}</DialogTitle>
+          <DialogTitle>{LABELS.setPoints}</DialogTitle>
         </DialogHeader>
         <div className="overflow-hidden flex flex-col gap-4">
           <div className="flex justify-between items-center w-full p-2 border rounded-sm">
@@ -122,15 +123,11 @@ export const ChangePointsModal = () => {
             <>
               <DialogDescription className="whitespace-pre-wrap">
                 <span>
-                  {"Текущий баланс - "}
+                  {`${LABELS.currentPoints} - `}
                   <strong>{formatPoints(initialPoints)}</strong>
                 </span>
                 <br />
-                <span>
-                  {
-                    "Вы можете вычесть или добавить пункты к балансу а также отредактировать всю сумму."
-                  }
-                </span>
+                <span>{LABELS.changePointsPrompt}</span>
               </DialogDescription>
               <FieldSet className="flex flex-col sm:flex-row justify-center items-center gap-3 self-center pt-4 pb-0">
                 <Input disabled value={initialPoints} />
@@ -150,7 +147,7 @@ export const ChangePointsModal = () => {
           ) : (
             <>
               <DialogDescription className="whitespace-pre-wrap">
-                <span>{"Текущий баланс равен 0. Пополнить?"}</span>
+                <span>{LABELS.currentPointsZeroPrompt}</span>
               </DialogDescription>
               <FieldSet className="flex flex-col sm:flex-row justify-center items-center gap-3 self-center pt-4 pb-0">
                 <Input value={points} onChange={handlePointsChange} />
@@ -164,7 +161,7 @@ export const ChangePointsModal = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant={"outline"} className="min-w-42" onClick={onClose}>
-            {"Отменить"}
+            {LABELS.cancel}
           </Button>
 
           <Button
@@ -172,7 +169,7 @@ export const ChangePointsModal = () => {
             disabled={points === initialPoints || isPending || !!error}
             onClick={handleSubmit}
           >
-            {"Подтвердить"}
+            {LABELS.submit}
           </Button>
         </div>
       </DialogContent>

@@ -1,4 +1,3 @@
-// store/use-modal-store.ts
 import { create } from "zustand";
 
 interface ModalData {
@@ -16,7 +15,7 @@ type ModalType = keyof ModalData;
 
 interface ModalStore {
   type: ModalType | null;
-  data: ModalData[ModalType] | Record<string, any>;
+  data: ModalData[ModalType] | Record<string, unknown>;
   isOpen: boolean;
   onOpen: <T extends ModalType>(type: T, data?: ModalData[T]) => void;
   onClose: () => void;

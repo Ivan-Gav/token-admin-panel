@@ -1,5 +1,3 @@
-"use client";
-
 import { useModalStore } from "@/store/useModalStore";
 import {
   Dialog,
@@ -21,6 +19,7 @@ import { isPastDatestring } from "@/utils/validation";
 import Close from "@/assets/close.svg?react";
 import { IconButton } from "../ui/IconButton";
 import { cn } from "@/lib/utils";
+import { ERRORS, LABELS } from "@/constants";
 
 export const ChangeTimeoutModal = () => {
   const { isOpen, onClose, type, data } = useModalStore();
@@ -44,7 +43,7 @@ export const ChangeTimeoutModal = () => {
 
   useEffect(() => {
     if (date && isPastDatestring(date)) {
-      setError("Дата должна быть в будущем");
+      setError(ERRORS.pastDate);
     } else {
       setError(null);
     }
@@ -82,7 +81,7 @@ export const ChangeTimeoutModal = () => {
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{"Изменить срок действия токена"}</DialogTitle>
+          <DialogTitle>{LABELS.changeActiveBefore}</DialogTitle>
         </DialogHeader>
         <div className="overflow-hidden flex flex-col gap-4">
           <div className="flex justify-between items-center w-full p-2 border rounded-sm">
@@ -99,7 +98,7 @@ export const ChangeTimeoutModal = () => {
         <FieldSet className="flex justify-center items-center gap-3 self-center py-8">
           <div className="flex justify-center gap-3">
             <Field className="w-fit">
-              <FieldLabel>Действителен до</FieldLabel>
+              <FieldLabel>{LABELS.activeBefore}</FieldLabel>
               <div className="flex items-center">
                 <DatePicker dateString={date} setDateString={setDate} />
                 <IconButton
@@ -124,7 +123,7 @@ export const ChangeTimeoutModal = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant={"outline"} className="min-w-42" onClick={onClose}>
-            {"Отменить"}
+            {LABELS.cancel}
           </Button>
 
           <Button
@@ -132,7 +131,7 @@ export const ChangeTimeoutModal = () => {
             disabled={date === initialTimeout || isPending || !!error}
             onClick={handleSubmit}
           >
-            {"Подтвердить"}
+            {LABELS.submit}
           </Button>
         </div>
       </DialogContent>

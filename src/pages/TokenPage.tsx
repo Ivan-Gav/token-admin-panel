@@ -10,6 +10,7 @@ import { useModalStore } from "@/store/useModalStore";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { tokenQueryOptions } from "@/utils/queryOptions";
 import { TokenLogs } from "@/components/TokenLogs";
+import { LABELS } from "@/constants";
 
 //---------------------------------------------------------
 
@@ -83,7 +84,7 @@ export const TokenPage = () => {
         <CardHeader className="flex justify-between gap-4 p-4 items-center border-b w-auto">
           <CardTitle
             className="overflow-hidden text-ellipsis text-xl font-semibold"
-            title="Идентификационный номер токена"
+            title={LABELS.tokenId}
           >
             {id}
           </CardTitle>
@@ -92,32 +93,32 @@ export const TokenPage = () => {
 
         <CardContent className="flex flex-col md:flex-row md:justify-between">
           <div className="flex flex-col gap-2 w-full  p-4">
-            <PropertyLine title={"Владелец"} value={owner || "—"} />
-            <PropertyLine title={"Комментарий"} value={comment || "—"} />
+            <PropertyLine title={LABELS.owner} value={owner || "—"} />
+            <PropertyLine title={LABELS.comment} value={comment || "—"} />
             <PropertyLine
-              title={"Создан"}
+              title={LABELS.createdAt}
               value={format(createdAt, "dd/MM/yyyy HH:mm") || "—"}
             />
             <PropertyLine
-              title={"Истекает"}
+              title={LABELS.activeBefore}
               value={
                 activeBefore ? format(activeBefore, "dd/MM/yyyy HH:mm") : "—"
               }
               onEditClick={onExpiredClick}
             />
             <PropertyLine
-              title={"Статус"}
-              value={isActive ? "Активен" : "Не активен"}
+              title={LABELS.status}
+              value={isActive ? LABELS.active : LABELS.disabled}
               onEditClick={onStatusClick}
             />
 
             <PropertyLine
-              title={"Доступ к закрытым раутам"}
-              value={hasPrivateAccess ? "Есть" : "Нет"}
+              title={LABELS.hasPrivateAccess}
+              value={hasPrivateAccess ? LABELS.yes : LABELS.no}
             />
 
             <PropertyLine
-              title={"Баланс (points)"}
+              title={LABELS.points}
               value={String(formattedPoints ?? 0)}
               onEditClick={onPointsClick}
             />

@@ -5,12 +5,13 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 import { useAuthContext } from "@/context";
 import { Button } from "@/components/ui/Button";
-import GostLogo from "@/assets/icon.svg?react";
+import Logo from "@/assets/token.svg?react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import PlusIcon from "@/assets/plus.svg?react";
 import ListIcon from "@/assets/list.svg?react";
 import { ModalProvider } from "@/components/modals/ModalProvider";
+import { LABELS } from "@/constants";
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,7 @@ const CreateTokenButton = () => {
       </Button>
       <Button variant="ghost" className="hidden sm:flex gap-1 px-1">
         <PlusIcon className="size-6" />
-        <span>{"Создать токен"}</span>
+        <span>{LABELS.createToken}</span>
       </Button>
     </Link>
   );
@@ -52,7 +53,7 @@ const LogoutButton = () => {
     <Link to={"/login"} onClick={handleLogout}>
       <Button variant="outline" size="icon">
         <LogOut className="h-[1.2rem] w-[1.2rem]" />
-        <span className="sr-only">LogOut</span>
+        <span className="sr-only">{LABELS.logOut}</span>
       </Button>
     </Link>
   );
@@ -74,7 +75,7 @@ const BackToListButton = () => {
       </Button>
       <Button variant="ghost" className="hidden sm:flex gap-1 px-1">
         <ListIcon className="size-6" />
-        <span className="hidden sm:inline">{"К списку токенов"}</span>
+        <span className="hidden sm:inline">{LABELS.tokenList}</span>
       </Button>
     </Link>
   );
@@ -91,7 +92,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
     <>
       <header className="w-full flex h-20 p-8 border-b items-center justify-between gap-8 sticky top-0 bg-background z-10">
         <Link to="/">
-          <GostLogo className="h-12 w-12 scale-100 hidden sm:block" />
+          <Logo className="h-14 w-14 scale-100 hidden sm:block" />
         </Link>
         <nav className="flex justify-end-safe items-center gap-4 ml-auto">
           {!!isAuthorized && (

@@ -32,25 +32,26 @@ export const TokenLogsList = ({ id }: Props) => {
   const { data, isLoading, isPlaceholderData } = useQuery({
     queryKey: ["items", limit, page, start, end],
     queryFn: async () => {
-      const requestBody = !!(start && end)
-        ? JSON.stringify({
-            last: {
-              limit: limit + 1, // Fetch one extra to check for "hasMore"
-              skip: page * limit,
-            },
-            period: {
-              start,
-              end,
-            },
-            token_id: id,
-          })
-        : JSON.stringify({
-            last: {
-              limit: limit + 1, // Fetch one extra to check for "hasMore"
-              skip: page * limit,
-            },
-            token_id: id,
-          });
+      const requestBody =
+        start && end
+          ? JSON.stringify({
+              last: {
+                limit: limit + 1, // Fetch one extra to check for "hasMore"
+                skip: page * limit,
+              },
+              period: {
+                start,
+                end,
+              },
+              token_id: id,
+            })
+          : JSON.stringify({
+              last: {
+                limit: limit + 1, // Fetch one extra to check for "hasMore"
+                skip: page * limit,
+              },
+              token_id: id,
+            });
 
       const response = await apiClient.post<Response<TokenLogItem[]>>(
         api.fetchTokenLogs,
@@ -84,7 +85,7 @@ export const TokenLogsList = ({ id }: Props) => {
       <div>
         {isLoading ? (
           <Loading />
-        ) : !!displayData?.length ? (
+        ) : displayData?.length ? (
           <ul className="divide-y list-none">
             {displayData?.map((item) => (
               <TokenLogsItem key={item.id} item={item} />

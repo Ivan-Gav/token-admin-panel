@@ -1,5 +1,3 @@
-"use client";
-
 import { useModalStore } from "@/store/useModalStore";
 import {
   Dialog,
@@ -9,6 +7,7 @@ import {
   DialogTitle,
 } from "../ui/Dialog";
 import { Button } from "../ui/Button";
+import { LABELS } from "@/constants";
 
 export const ConfirmPrivateAccessModal = () => {
   const { isOpen, onClose, type, data } = useModalStore();
@@ -29,16 +28,13 @@ export const ConfirmPrivateAccessModal = () => {
     <Dialog open={isModalOpen} onOpenChange={() => handleAction(false)}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{"Подтвердите доступ к приватным методам"}</DialogTitle>
+          <DialogTitle>{LABELS.confirmHasPrivateAccess}</DialogTitle>
         </DialogHeader>
         <div className="overflow-hidden flex flex-col gap-4">
           <DialogDescription className="text-center text-balance text-lg my-3">
-            Вы выбрали опцию{" "}
-            <strong className="text-red-600">
-              Предоставить доступ к приватным методам
-            </strong>
-            . Подтвердите создание токена с такими правами или вернитесь к форме
-            редактирования.
+            {`${LABELS.confirmHasPrivateAccessPrompt1} `}
+            <strong className="text-red-600">{LABELS.hasPrivateAccess}</strong>
+            {`. ${LABELS.confirmHasPrivateAccessPrompt2}`}
           </DialogDescription>
         </div>
 
@@ -48,11 +44,11 @@ export const ConfirmPrivateAccessModal = () => {
             className="min-w-42"
             onClick={() => handleAction(false)}
           >
-            {"Вернуться к форме"}
+            {LABELS.backToTheForm}
           </Button>
 
           <Button className="min-w-42" onClick={() => handleAction(true)}>
-            {"Создать токен"}
+            {LABELS.createToken}
           </Button>
         </div>
       </DialogContent>

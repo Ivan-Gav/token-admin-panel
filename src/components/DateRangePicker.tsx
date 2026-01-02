@@ -1,9 +1,8 @@
-"use client";
 import { useMemo, type MouseEvent } from "react";
-import { format, endOfDay, startOfDay } from "date-fns";
+import { format, endOfDay, startOfDay, sub } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { type DateRange } from "react-day-picker";
-import { ru } from "react-day-picker/locale";
+// import { ru } from "react-day-picker/locale";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -15,6 +14,7 @@ import {
 } from "@/components/ui/Popover";
 import CloseIcon from "@/assets/close.svg?react";
 import { IconButton } from "./ui/IconButton";
+import { LABELS } from "@/constants";
 
 type DateRangePickerProps = {
   from?: string;
@@ -50,6 +50,9 @@ export function DateRangePicker({ from, to, onUpdate }: DateRangePickerProps) {
     }
   };
 
+  const currentDate = new Date();
+  const startDate = sub(currentDate, { years: 2 });
+
   return (
     <div className="flex items-center max-w-full">
       <Popover>
@@ -66,14 +69,13 @@ export function DateRangePicker({ from, to, onUpdate }: DateRangePickerProps) {
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y", { locale: ru })} -{" "}
-                  {format(date.to, "LLL dd, y", { locale: ru })}
+                  {`${format(date.from, "LLL dd, y")} - ${format(date.to, "LLL dd, y")}`}
                 </>
               ) : (
-                format(date.from, "LLL dd, y", { locale: ru })
+                format(date.from, "LLL dd, y")
               )
             ) : (
-              <span>Выбрать интервал</span>
+              <span>{LABELS.selectDateRange}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -82,6 +84,7 @@ export function DateRangePicker({ from, to, onUpdate }: DateRangePickerProps) {
             mode="range"
             min={1}
             defaultMonth={date?.from}
+            startMonth={startDate}
             selected={date}
             onSelect={handleSelect}
             numberOfMonths={2}
@@ -93,7 +96,7 @@ export function DateRangePicker({ from, to, onUpdate }: DateRangePickerProps) {
         {!!(from && to) && (
           <IconButton
             onClick={handleClear}
-            title="Очистить интервал"
+            title={LABELS.reset}
             className="p-1 size-min"
           >
             <CloseIcon className="h-4 w-4" />

@@ -26,6 +26,7 @@ import { getApiError } from "@/utils/errorHandling";
 import { useAuthContext } from "@/context";
 import { useNavigate } from "@tanstack/react-router";
 import { useModalStore } from "@/store/useModalStore";
+import { LABELS } from "@/constants";
 
 export const TokenCreatePage = () => {
   const defaultValues: TokenCreateDataForm = {
@@ -66,15 +67,15 @@ export const TokenCreatePage = () => {
   });
 
   const onSubmit = async ({ value }: { value: TokenCreateDataForm }) => {
-    // поля has_active_before, has_points не отправляем на бэк
+    // fields has_active_before, has_points should not be sent to backend
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { has_active_before, has_points, ...formData } = value;
 
-    // подгоняем дату под требования бэка
     const adjustedFormData = has_points
       ? formData
       : { ...formData, points: undefined };
 
-    // подтверждение если has_private_access
+    // show confirmation modal if has_private_access is true
     if (adjustedFormData.has_private_access) {
       const proceed = await new Promise<boolean>((resolve) => {
         onOpen("confirmPrivateAccess", { resolve });
@@ -129,15 +130,15 @@ export const TokenCreatePage = () => {
           form.handleSubmit();
         }}
       >
-        <FieldLegend>Создать токен</FieldLegend>
+        <FieldLegend>{LABELS.createToken}</FieldLegend>
 
         <form.Field
           name="owner"
           children={(field) => (
             <Field>
-              <FieldLabel htmlFor={field.name}>Владелец</FieldLabel>
+              <FieldLabel htmlFor={field.name}>{LABELS.owner}</FieldLabel>
               <Input
-                placeholder="Имя Фамилия"
+                placeholder={LABELS.fullName}
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
@@ -165,14 +166,14 @@ export const TokenCreatePage = () => {
           name="comment"
           children={(field) => (
             <Field>
-              <FieldLabel htmlFor={field.name}>Комментарий</FieldLabel>
+              <FieldLabel htmlFor={field.name}>{LABELS.comment}</FieldLabel>
               <Textarea
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="Любая дополнительная информация на ваше усмотрение"
+                placeholder={LABELS.commentPlaceholder}
                 className="resize-none"
               />
               <FieldError className="whitespace-pre">
@@ -189,7 +190,6 @@ export const TokenCreatePage = () => {
             name="has_points"
             listeners={{
               onChange: ({ value }) => {
-                // чекбокс активации для points
                 if (!value) {
                   form.setFieldValue("points", 0);
                 }
@@ -203,7 +203,7 @@ export const TokenCreatePage = () => {
                   onBlur={handleBlur}
                   checked={state.value}
                 />
-                <FieldLabel htmlFor={name}>Указать баланс (points)</FieldLabel>
+                <FieldLabel htmlFor={name}>{LABELS.setPoints}</FieldLabel>
                 <FieldError className="whitespace-pre">
                   {state.meta.errors.map((error) => error?.message).join("\n")}
                 </FieldError>
@@ -247,7 +247,6 @@ export const TokenCreatePage = () => {
             name="has_active_before"
             listeners={{
               onChange: ({ value }) => {
-                // чекбокс активации для active_before
                 if (!value) {
                   form.setFieldValue("active_before", undefined);
                 }
@@ -261,7 +260,7 @@ export const TokenCreatePage = () => {
                   onBlur={handleBlur}
                   checked={state.value}
                 />
-                <FieldLabel htmlFor={name}>Указать срок действия</FieldLabel>
+                <FieldLabel htmlFor={name}>{LABELS.setActiveBefore}</FieldLabel>
                 <FieldError className="whitespace-pre">
                   {state.meta.errors.map((error) => error?.message).join("\n")}
                 </FieldError>
@@ -304,7 +303,7 @@ export const TokenCreatePage = () => {
                 checked={state.value}
               />
               <FieldLabel htmlFor={name} className="font-normal">
-                Предоставить доступ к приватным методам
+                {LABELS.setHasPrivateAccess}
               </FieldLabel>
               <FieldError className="whitespace-pre">
                 {state.meta.errors.map((error) => error?.message).join("\n")}
@@ -318,7 +317,7 @@ export const TokenCreatePage = () => {
             selector={(state) => [state.canSubmit]}
             children={([canSubmit]) => (
               <Button type="submit" disabled={!canSubmit} className="w-32">
-                Подтвердить
+                {LABELS.submit}
               </Button>
             )}
           />
@@ -328,7 +327,7 @@ export const TokenCreatePage = () => {
             onClick={resetForm}
             className="w-32"
           >
-            Сбросить
+            {LABELS.reset}
           </Button>
         </Field>
 
@@ -340,11 +339,3 @@ export const TokenCreatePage = () => {
     </div>
   );
 };
-
-// Данные для создания токена
-
-// active_before | Type:string
-// comment | Type:string
-// has_private_access | Type:boolean
-// owner | Type:string
-// points | Type:integer
