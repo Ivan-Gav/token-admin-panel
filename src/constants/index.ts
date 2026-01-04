@@ -62,6 +62,9 @@ export const LABELS = {
   createMoreTokens: "create more tokens",
   toTheList: "go to the list",
   whatToDo: "you can create more tokens or go to the token list",
+  about: "about",
+  home: "home",
+  useDemoApiKey: "use the following key for demo access",
 };
 
 export const ERRORS = {

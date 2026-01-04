@@ -1,12 +1,14 @@
 import { useState, type FormEvent, type InputHTMLAttributes } from "react";
 import { useAuthContext } from "../context";
 import { useNavigate } from "@tanstack/react-router";
-import { Field, FieldError } from "@/components/ui/Field";
+import { Field, FieldDescription, FieldError } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ERRORS, LABELS } from "@/constants";
+
+const DEMO_API_KEY = import.meta.env.VITE_DEMO_API_KEY;
 
 const PasswordInput = ({
   className,
@@ -73,6 +75,10 @@ export const LoginPage = () => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
+        <FieldDescription>
+          {`${LABELS.useDemoApiKey}: `}
+          <strong>{DEMO_API_KEY}</strong>
+        </FieldDescription>
         <FieldError className="md:text-xl">
           {isAuthError ? ERRORS.wrongKey : ""}
         </FieldError>

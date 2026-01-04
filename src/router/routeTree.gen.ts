@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './../routes/__root'
 import { Route as TokenCreateRouteImport } from './../routes/token-create'
 import { Route as LoginRouteImport } from './../routes/login'
+import { Route as AboutRouteImport } from './../routes/about'
 import { Route as _404RouteImport } from './../routes/__404'
 import { Route as IndexRouteImport } from './../routes/index'
 import { Route as TokensIdRouteImport } from './../routes/tokens.$id'
@@ -23,6 +24,11 @@ const TokenCreateRoute = TokenCreateRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const _404Route = _404RouteImport.update({
@@ -42,12 +48,14 @@ const TokensIdRoute = TokensIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/token-create': typeof TokenCreateRoute
   '/tokens/$id': typeof TokensIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/token-create': typeof TokenCreateRoute
   '/tokens/$id': typeof TokensIdRoute
@@ -56,21 +64,30 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/__404': typeof _404Route
+  '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/token-create': typeof TokenCreateRoute
   '/tokens/$id': typeof TokensIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/token-create' | '/tokens/$id'
+  fullPaths: '/' | '/about' | '/login' | '/token-create' | '/tokens/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/token-create' | '/tokens/$id'
-  id: '__root__' | '/' | '/__404' | '/login' | '/token-create' | '/tokens/$id'
+  to: '/' | '/about' | '/login' | '/token-create' | '/tokens/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/__404'
+    | '/about'
+    | '/login'
+    | '/token-create'
+    | '/tokens/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   _404Route: typeof _404Route
+  AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
   TokenCreateRoute: typeof TokenCreateRoute
   TokensIdRoute: typeof TokensIdRoute
@@ -90,6 +107,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/__404': {
@@ -119,6 +143,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   _404Route: _404Route,
+  AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
   TokenCreateRoute: TokenCreateRoute,
   TokensIdRoute: TokensIdRoute,

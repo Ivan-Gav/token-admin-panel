@@ -10,8 +10,32 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import PlusIcon from "@/assets/plus.svg?react";
 import ListIcon from "@/assets/list.svg?react";
+import AboutIcon from "@/assets/about.svg?react";
+import GitHubIcon from "@/assets/github.svg?react";
 import { ModalProvider } from "@/components/modals/ModalProvider";
 import { LABELS } from "@/constants";
+
+// ----------------------------------------------------------------------
+
+const AboutButton = () => {
+  const { pathname } = useLocation();
+
+  if (pathname === "/about") {
+    return null;
+  }
+
+  return (
+    <Link to={"/about"}>
+      <Button variant="outline" className="sm:hidden" size="icon">
+        <AboutIcon className="size-6" />
+      </Button>
+      <Button variant="ghost" className="hidden sm:flex gap-1 px-1">
+        <AboutIcon className="size-6" />
+        <span>{LABELS.about}</span>
+      </Button>
+    </Link>
+  );
+};
 
 // ----------------------------------------------------------------------
 
@@ -99,17 +123,32 @@ export const Layout = ({ children }: PropsWithChildren) => {
             <>
               <BackToListButton />
               <CreateTokenButton />
-              <LogoutButton />
             </>
           )}
+
+          <AboutButton />
+
+          {!!isAuthorized && <LogoutButton />}
+
           <ThemeToggle />
         </nav>
       </header>
-      <main className="w-full min-h-[calc(100vh-5rem)] p-8 flex flex-col">
-        <section className="w-full flex flex-col grow justify-center-safe items-center-safe">
+      <main className="w-full min-h-[calc(100vh-8rem)] p-8 flex flex-col grow">
+        <section className="w-full h-full flex flex-col grow justify-center-safe items-center-safe">
           {children}
         </section>
       </main>
+      <footer className="w-full flex h-12 px-8 border-t items-center justify-between gap-8">
+        <div className="flex">
+          <span>©&nbsp;2026&nbsp;</span>
+          <a href="https://gavrilin.online/" target="_blank">
+            Ivan Gavrilin
+          </a>
+        </div>
+        <a href="https://github.com/Ivan-Gav/token-admin-panel" target="_blank">
+          <GitHubIcon className="size-6" />
+        </a>
+      </footer>
       <ModalProvider />
     </>
   );

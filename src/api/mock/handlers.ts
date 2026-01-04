@@ -19,10 +19,11 @@ import { initialTokensArray, logStorage } from "./data";
 import { api } from "../endpoints";
 
 const AUTH_HEADER_NAME = import.meta.env.VITE_AUTH_HEADER_NAME || "";
+const DEMO_API_KEY = import.meta.env.VITE_DEMO_API_KEY;
 
 const tokensArray = [...initialTokensArray];
 
-const AUTHORIZED_KEYS = ["some_admin_token"];
+const AUTHORIZED_KEYS = [DEMO_API_KEY];
 
 // --------------------------------------------------------------
 
@@ -34,9 +35,8 @@ const isValidUUID = (uuid: string) => {
 
 // --------------------------------------------------------------
 
-const isAuthorized = (apiKey?: string | null) => {
-  return apiKey ? AUTHORIZED_KEYS.includes(apiKey) : false;
-};
+const isAuthorized = (apiKey?: string | null) =>
+  apiKey ? AUTHORIZED_KEYS.includes(apiKey) : false;
 
 // --------------------------------------------------------------
 
@@ -44,7 +44,7 @@ const checkAuth = (request: StrictRequest<DefaultBodyType>) => {
   const key = request.headers.get(AUTH_HEADER_NAME);
 
   if (!isAuthorized(key)) {
-    return HttpResponse.json<Response>(
+    throw HttpResponse.json<Response>(
       { success: false, message: "Wrong API key", data: null },
       { status: 401 }
     );
@@ -63,7 +63,7 @@ const checkTokenId = (data: unknown) => {
     !("token_id" in data) ||
     !isValidTokenId(data.token_id)
   ) {
-    return HttpResponse.json<Response>(
+    throw HttpResponse.json<Response>(
       { success: false, message: "Bad request", data: null },
       { status: 400 }
     );
@@ -74,7 +74,7 @@ const checkTokenId = (data: unknown) => {
 
 const checkTokenIndex = (index: number) => {
   if (index === -1) {
-    return HttpResponse.json<Response>(
+    throw HttpResponse.json<Response>(
       { success: false, message: "Token not found", data: null },
       { status: 404 }
     );
