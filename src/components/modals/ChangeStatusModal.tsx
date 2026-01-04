@@ -13,7 +13,7 @@ import { Label } from "../ui/Label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, apiClient } from "@/api";
 import type { Response } from "@/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getApiError } from "@/utils/errorHandling";
 import { FieldError, FieldSet } from "../ui/Field";
 import { LABELS } from "@/constants";
@@ -28,15 +28,8 @@ export const ChangeStatusModal = () => {
     { id: string; active: boolean }
   >;
 
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(initialActive);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      setError(null);
-      setActive(initialActive);
-    }
-  }, [setError, setActive, initialActive, isOpen]);
 
   const queryClient = useQueryClient();
 

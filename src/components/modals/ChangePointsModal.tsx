@@ -11,7 +11,7 @@ import { CopyToClipboard } from "../ui/CopyToClipboard";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, apiClient } from "@/api";
 import type { Response } from "@/types";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { getApiError } from "@/utils/errorHandling";
 import { FieldError, FieldSet } from "../ui/Field";
 
@@ -37,17 +37,10 @@ export const ChangePointsModal = () => {
     { id: string; points: number | undefined }
   >;
 
-  const [points, setPoints] = useState<number>();
+  const [points, setPoints] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
 
   const sum = initialPoints + (points ?? 0);
-
-  useEffect(() => {
-    if (isOpen) {
-      setError(null);
-      setPoints(0);
-    }
-  }, [setError, setPoints, initialPoints, isOpen]);
 
   const handlePointsChange = (e: ChangeEvent<HTMLInputElement>) => {
     const cleaned = cleanInput(e.target.value);

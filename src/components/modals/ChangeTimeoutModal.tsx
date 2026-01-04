@@ -11,7 +11,7 @@ import { CopyToClipboard } from "../ui/CopyToClipboard";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, apiClient } from "@/api";
 import type { Response } from "@/types";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { getApiError } from "@/utils/errorHandling";
 import { Field, FieldError, FieldLabel, FieldSet } from "../ui/Field";
 import { DatePicker } from "../DatePicker";
@@ -31,23 +31,20 @@ export const ChangeTimeoutModal = () => {
     { id: string; timeout: string | undefined }
   >;
 
-  const [date, setDate] = useState<string>();
+  const [date, setDate] = useState<string | undefined>(initialTimeout);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      setError(null);
-      setDate(initialTimeout);
-    }
-  }, [setError, setDate, initialTimeout, isOpen]);
-
-  useEffect(() => {
-    if (date && isPastDatestring(date)) {
-      setError(ERRORS.pastDate);
-    } else {
-      setError(null);
-    }
-  }, [date, setError]);
+  const handleChange = useCallback(
+    (date: string | undefined) => {
+      setDate(date);
+      if (date && isPastDatestring(date)) {
+        setError(ERRORS.pastDate);
+      } else {
+        setError(null);
+      }
+    },
+    [setDate, setError]
+  );
 
   const queryClient = useQueryClient();
 
@@ -100,11 +97,10 @@ export const ChangeTimeoutModal = () => {
             <Field className="w-fit">
               <FieldLabel>{LABELS.activeBefore}</FieldLabel>
               <div className="flex items-center">
-                <DatePicker dateString={date} setDateString={setDate} />
+                <DatePicker dateString={date} setDateString={handleChange} />
                 <IconButton
                   onClick={() => {
-                    setError(null);
-                    setDate(undefined);
+                    handleChange(undefined);
                   }}
                   className={cn(
                     "h-full px-2 py-2 size-fit cursor-pointer",
