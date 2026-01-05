@@ -10,13 +10,10 @@ console.log("BASE_URL: ", BASE_URL);
 async function enableMocking() {
   const { worker } = await import("./api/mock/browser.ts");
   return await worker.start({
-    // serviceWorker: {
-    //   url: BASE_URL
-    //     ? `/${BASE_URL}/mockServiceWorker.js`
-    //     : `/mockServiceWorker.js`,
-    // },
-        serviceWorker: {
-      url: `/mockServiceWorker.js`,
+    serviceWorker: {
+      url: BASE_URL
+        ? `/${BASE_URL}/mockServiceWorker.js`
+        : `/mockServiceWorker.js`,
     },
   });
 }
