@@ -3,11 +3,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 async function enableMocking() {
   const { worker } = await import("./api/mock/browser.ts");
   return await worker.start({
     serviceWorker: {
-      url: "/public/mockServiceWorker.js",
+      url: `/${BASE_URL}/public/mockServiceWorker.js`,
     },
   });
 }
