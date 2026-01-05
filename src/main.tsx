@@ -9,7 +9,7 @@ async function enableMocking() {
   const { worker } = await import("./api/mock/browser.ts");
   return await worker.start({
     serviceWorker: {
-      url: `/${BASE_URL}/public/mockServiceWorker.js`,
+      url: `/${BASE_URL}/mockServiceWorker.js`,
     },
   });
 }
