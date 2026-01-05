@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
         filename: "bundlestats.html",
       }) as PluginOption,
     ],
-    base: env.VITE_BASE_URL || "./",
+    base: env.VITE_BASE_URL ? `/${env.VITE_BASE_URL}/` : "/",
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
