@@ -8,9 +8,8 @@ export const AboutPage = () => {
   return (
     <div className="grow flex flex-col gap-4 text-lg">
       <p>
-        This is a demo version of a token admin pannel that I made for my
-        company in 2025. Slightly restyled and cleared from all the
-        company-specific content. Real API calls replaced with msw-http-mock.
+        This is a demo version of a token admin pannel. Real API calls replaced
+        with msw-http-mock.
       </p>
       <p>
         The app gives you access to a list of tokens. You can create and edit
