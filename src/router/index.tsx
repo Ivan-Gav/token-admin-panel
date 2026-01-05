@@ -7,6 +7,8 @@ import { useAuthContext, type AuthContextType } from "../context";
 import { Loading } from "@/components/ui/Loading";
 import { NotFoundPage } from "@/pages";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 export interface RouterContext {
   auth: AuthContextType;
   queryClient: QueryClient;
@@ -21,6 +23,7 @@ declare module "@tanstack/react-router" {
 
 const router = createRouter({
   routeTree,
+  basepath: BASE_URL ? `${BASE_URL}` : "/",
   defaultPreload: "intent",
   scrollRestoration: true,
   context: {
