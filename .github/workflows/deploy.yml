@@ -43,7 +43,7 @@ jobs:
           VITE_AUTH_HEADER_NAME: ${{ vars.VITE_AUTH_HEADER_NAME }}
           VITE_DEMO_API_KEY: ${{ secrets.VITE_DEMO_API_KEY }}
       - name: Create service worker
-        run: npx msw init public
+        run: npx msw init ./public
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

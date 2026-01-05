@@ -58,8 +58,6 @@
     "vite-plugin-svgr": "^4.5.0"
   },
   "msw": {
-    "workerDirectory": [
-      "public"
-    ]
+    "workerDirectory": "./public"
   }
 }
