@@ -59,7 +59,6 @@ export const LoginPage = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (value.trim()) {
-      console.log("submitted: ", value);
       setApiKey(value.trim());
       setIsAuthError(false);
       navigate({ to: "/" });

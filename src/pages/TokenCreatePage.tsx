@@ -46,7 +46,6 @@ export const TokenCreatePage = () => {
 
   const mutation = useMutation({
     mutationFn: async (value: TokenCreateData) => {
-      console.log("submitted value: ", value);
       const response = await apiClient.post<Response<TokenCreateResponseData>>(
         api.createToken,
         value

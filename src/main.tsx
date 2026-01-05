@@ -5,8 +5,6 @@ import App from "./App.tsx";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-console.log("BASE_URL: ", BASE_URL);
-
 async function enableMocking() {
   const { worker } = await import("./api/mock/browser.ts");
   return await worker.start({

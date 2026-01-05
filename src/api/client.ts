@@ -1,7 +1,6 @@
 // src/api/client.js
 import axios, { AxiosError } from "axios";
 
-// const API_BASE_URL = import.meta.env.VITE_BASE_URL || "";
 const API_BASE_URL = "";
 const AUTH_HEADER_NAME = import.meta.env.VITE_AUTH_HEADER_NAME || "";
 
