@@ -39,6 +39,9 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+        env:
+          VITE_AUTH_HEADER_NAME: ${{ vars.VITE_AUTH_HEADER_NAME }}
+          VITE_DEMO_API_KEY: ${{ secrets.VITE_DEMO_API_KEY }}
       - name: Create service worker
         run: npx msw init public
       - name: Setup Pages
