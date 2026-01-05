@@ -5,7 +5,11 @@ import App from "./App.tsx";
 
 async function enableMocking() {
   const { worker } = await import("./api/mock/browser.ts");
-  return await worker.start();
+  return await worker.start({
+    serviceWorker: {
+      url: "/public/mockServiceWorker.js",
+    },
+  });
 }
 
 enableMocking().then(() => {
